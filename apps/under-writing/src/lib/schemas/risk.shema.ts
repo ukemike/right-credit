@@ -1,0 +1,35 @@
+import * as Yup from 'yup';
+
+export const riskSchema = Yup.object().shape({
+  title: Yup.string().required('Title is required'),
+  first_name: Yup.string().required('First name is required'),
+  middle_name: Yup.string().required('Middle name is required'),
+  sur_name: Yup.string().required('Surname is required'),
+  date_of_birth: Yup.string().required('Date of birth is required'),
+  bvn_number: Yup.string().required('BVN number is required'),
+  mobile_number: Yup.string().required('Mobile number is required'),
+  email_address: Yup.string().required('Email address is required'),
+  gender: Yup.string().required('Gender is required'),
+  marital_status: Yup.string().required('Marital status is required'),
+  no_of_dependant: Yup.number().required('Number of dependents is required'),
+  highest_education_level: Yup.string().required(
+    'Highest level of education is required'
+  ),
+  residential_address: Yup.string().required('Residential address is required'),
+  residential_state: Yup.string().required('Residential state is required'),
+  residential_town: Yup.string().required('Residential town is required'),
+  name_of_employer: Yup.string().required('Name of employer is required'),
+  employment_type: Yup.string().required('Employment type is required'),
+  employer_industry: Yup.string().required('Employer industry is required'),
+  employer_address: Yup.string().required('Employer address is required'),
+  employer_state: Yup.string().required('Employer state is required'),
+  employer_town: Yup.string().required('Employer town is required'),
+  business_name: Yup.string().required('Business name is required'),
+  registration_number: Yup.string().required('Registration number is required'),
+  business_type: Yup.string().required('Business type is required'),
+  business_industry: Yup.string().required('Business industry is required'),
+  business_address: Yup.string().required('Business address is required'),
+  business_state: Yup.string().required('Business state is required'),
+  business_town: Yup.string().required('Business town is required'),
+  bank_statement: Yup.string().required('Bank statement is required'),
+});
