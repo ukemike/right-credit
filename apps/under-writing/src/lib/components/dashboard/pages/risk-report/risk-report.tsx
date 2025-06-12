@@ -114,7 +114,7 @@ const RiskReportComponent = () => {
 
   const tabs = [
     {
-      header: 'Pending Request (23)',
+      header: `Pending Request (${requests?.length})`,
       component: <RiskTable data={requests} />,
       status: 'in_progress',
     },
@@ -199,11 +199,11 @@ const RiskReportComponent = () => {
           >
             <InputGroup>
               <InputLeftElement pointerEvents="none">
-                <Image src="/images/search-2.svg" />
+                <Image src="/images/search-2.svg" alt="search" />
               </InputLeftElement>
               <Input
                 type="text"
-                placeholder="Search name, email or ID"
+                placeholder="Search report"
                 focusBorderColor="brand.100"
                 borderColor="border.100"
                 borderRadius="full"

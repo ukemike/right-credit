@@ -29,10 +29,10 @@ const RiskTable = ({ data }: { data: LoanData[] }) => {
       {data?.length === 0 ? (
         <Box bg="#FAFBFF">
           <EmptyState
-            title="No loan created yet"
-            description="New loans created will be visible on this page"
-            btnText="Create New Loan"
-            onClick={() => router.push('/dashboard/loans/create-loan')}
+            title="No report found"
+            description="All reports will be visible on this page"
+            btnText="Create New Report"
+            onClick={() => router.push('/dashboard/risk-report/create-risk-report')}
           />
         </Box>
       ) : (

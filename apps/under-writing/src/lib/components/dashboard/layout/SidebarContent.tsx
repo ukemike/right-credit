@@ -28,30 +28,6 @@ const LinkItems: Array<LinkItemProps> = [
     icon: '/images/dashboard.svg',
     iconActive: '/images/dashboard-active.svg',
   },
-  // {
-  //   name: 'Products',
-  //   path: '/dashboard/products',
-  //   icon: '/images/products.svg',
-  //   iconActive: '/images/products-active.svg',
-  // },
-  // {
-  //   name: 'Customers',
-  //   path: '/dashboard/customers',
-  //   icon: '/images/people.svg',
-  //   iconActive: '/images/people-active.svg',
-  // },
-  // {
-  //   name: 'Loans',
-  //   path: '/dashboard/loans',
-  //   icon: '/images/loans.svg',
-  //   iconActive: '/images/loans-active.svg',
-  // },
-  // {
-  //   name: 'Risk / Underwriting',
-  //   path: '/dashboard/risk',
-  //   icon: '/images/risk.svg',
-  //   iconActive: '/images/risk-active.svg',
-  // },
   {
     name: 'Risk Report',
     path: '/dashboard/risk-report',
@@ -72,47 +48,11 @@ const LinkItems: Array<LinkItemProps> = [
   },
 ];
 
-const LinkItemsBottom: Array<LinkItemProps> = [
-  // {
-  //   name: 'Get Started',
-  //   path: '/dashboard/get-started',
-  //   icon: '/images/get-started.svg',
-  //   iconActive: '/images/get-started-active.svg',
-  // },
-  {
-    name: 'Settings',
-    path: '/dashboard/settings',
-    icon: '/images/settings.svg',
-    iconActive: '/images/settings-active.svg',
-  },
-];
-
 interface SidebarProps extends BoxProps {
   onClose: () => void;
   user: any;
   isLoading: boolean;
 }
-
-// {
-//   "address": null,
-//   "business_kyc": {},
-//   "business_verified": true,
-//   "cac_certificate_document_url": null,
-//   "cac_no": null,
-//   "country": null,
-//   "data_protection_officer": null,
-//   "name_of_directors": [],
-//   "operating_licence_document_url": null,
-//   "owner": {
-//       "email": "ukemike4@gmail.com",
-//       "first_name": "Michael",
-//       "id": 34,
-//       "last_name": "Uke",
-//       "role": null
-//   },
-//   "registered_name": null,
-//   "status_report_document_url": null
-// }
 
 const SidebarContent = ({
   onClose,
@@ -157,22 +97,6 @@ const SidebarContent = ({
       ))}
 
       <br />
-      {/* <br /> */}
-
-      <Text fontSize="13px" color="#00000080" ml="8" fontWeight="600" mb="2">
-        Support
-      </Text>
-
-      {LinkItemsBottom.map((link) => (
-        <NavItem
-          key={link.name}
-          icon={link.icon}
-          path={link.path}
-          iconActive={link.iconActive}
-        >
-          {link.name}
-        </NavItem>
-      ))}
 
       <Divider my="4" borderColor="border.200" />
 
@@ -195,7 +119,6 @@ const SidebarContent = ({
             <VStack alignItems="flex-start" spacing="0">
               <Text fontSize="14px" color="bodyText.200" fontWeight="500">
                 {user?.owner?.first_name} {user?.owner?.last_name}
-                {/* . Admin */}
               </Text>
               <Text fontSize="12px" color="#00000080" fontWeight="400">
                 {user?.owner?.email}

@@ -29,10 +29,10 @@ const RiskTable = ({ data }: { data: LoanData[] }) => {
       {data?.length === 0 ? (
         <Box bg="#FAFBFF">
           <EmptyState
-            title="No loan created yet"
-            description="New loans created will be visible on this page"
-            btnText="Create New Loan"
-            onClick={() => router.push('/dashboard/loans/create-loan')}
+           title="No report found"
+           description="All reports will be visible on this page"
+           btnText="Create New Report"
+           onClick={() => router.push('/dashboard/risk-report/create-risk-report')}
           />
         </Box>
       ) : (
@@ -72,16 +72,6 @@ const RiskTable = ({ data }: { data: LoanData[] }) => {
                     textTransform="capitalize"
                   >
                     Phone
-                  </Text>
-                </Th>
-                <Th>
-                  <Text
-                    fontSize="14px"
-                    fontWeight="700"
-                    color="bodyText.200"
-                    textTransform="capitalize"
-                  >
-                    Pending Score
                   </Text>
                 </Th>
                 <Th>
@@ -132,12 +122,6 @@ const RiskTable = ({ data }: { data: LoanData[] }) => {
                   <Td py={3} borderBottom="1px solid #FAFAFA">
                     <Text fontSize="14px" fontWeight="400" color="bodyText.100">
                       {risk.personal_details?.mobile_number}
-                    </Text>
-                  </Td>
-
-                  <Td py={3} borderBottom="1px solid #FAFAFA">
-                    <Text fontSize="14px" fontWeight="400" color="bodyText.100">
-                      -
                     </Text>
                   </Td>
 

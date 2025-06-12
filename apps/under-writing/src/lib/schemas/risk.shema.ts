@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 
 export const riskSchema = Yup.object().shape({
+  loan_type: Yup.string().required('Loan type is required'),
   title: Yup.string().required('Title is required'),
   first_name: Yup.string().required('First name is required'),
   middle_name: Yup.string().required('Middle name is required'),
@@ -18,18 +19,75 @@ export const riskSchema = Yup.object().shape({
   residential_address: Yup.string().required('Residential address is required'),
   residential_state: Yup.string().required('Residential state is required'),
   residential_town: Yup.string().required('Residential town is required'),
-  name_of_employer: Yup.string().required('Name of employer is required'),
-  employment_type: Yup.string().required('Employment type is required'),
-  employer_industry: Yup.string().required('Employer industry is required'),
-  employer_address: Yup.string().required('Employer address is required'),
-  employer_state: Yup.string().required('Employer state is required'),
-  employer_town: Yup.string().required('Employer town is required'),
-  business_name: Yup.string().required('Business name is required'),
-  registration_number: Yup.string().required('Registration number is required'),
-  business_type: Yup.string().required('Business type is required'),
-  business_industry: Yup.string().required('Business industry is required'),
-  business_address: Yup.string().required('Business address is required'),
-  business_state: Yup.string().required('Business state is required'),
-  business_town: Yup.string().required('Business town is required'),
+  
+  // Employment fields - only required for payday (personal) loans
+  name_of_employer: Yup.string().when('loan_type', {
+    is: 'payday',
+    then: (schema) => schema.required('Name of employer is required'),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  employment_type: Yup.string().when('loan_type', {
+    is: 'payday',
+    then: (schema) => schema.required('Employment type is required'),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  employer_industry: Yup.string().when('loan_type', {
+    is: 'payday',
+    then: (schema) => schema.required('Employer industry is required'),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  employer_address: Yup.string().when('loan_type', {
+    is: 'payday',
+    then: (schema) => schema.required('Employer address is required'),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  employer_state: Yup.string().when('loan_type', {
+    is: 'payday',
+    then: (schema) => schema.required('Employer state is required'),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  employer_town: Yup.string().when('loan_type', {
+    is: 'payday',
+    then: (schema) => schema.required('Employer town is required'),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  
+  // Business fields - only required for business loans
+  business_name: Yup.string().when('loan_type', {
+    is: 'business',
+    then: (schema) => schema.required('Business name is required'),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  registration_number: Yup.string().when('loan_type', {
+    is: 'business',
+    then: (schema) => schema.required('Registration number is required'),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  business_type: Yup.string().when('loan_type', {
+    is: 'business',
+    then: (schema) => schema.required('Business type is required'),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  business_industry: Yup.string().when('loan_type', {
+    is: 'business',
+    then: (schema) => schema.required('Business industry is required'),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  business_address: Yup.string().when('loan_type', {
+    is: 'business',
+    then: (schema) => schema.required('Business address is required'),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  business_state: Yup.string().when('loan_type', {
+    is: 'business',
+    then: (schema) => schema.required('Business state is required'),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  business_town: Yup.string().when('loan_type', {
+    is: 'business',
+    then: (schema) => schema.required('Business town is required'),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  
   bank_statement: Yup.string().required('Bank statement is required'),
 });

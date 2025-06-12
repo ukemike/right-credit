@@ -1,9 +1,5 @@
 'use client';
 
-/* eslint-disable sonarjs/no-duplicate-string */
-/* eslint-disable @typescript-eslint/no-unused-expressions */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import { Box, Text, VStack, HStack, Progress, Image } from '@chakra-ui/react';
 import { useState } from 'react';
 
@@ -43,9 +39,8 @@ const WalletComponent = () => {
           alignItems={{ base: 'flex-start', md: 'center' }}
         >
           <Text fontSize="14px" fontWeight="500" color="white">
-            You’ve used all 3 of your free analyses for today. To continue
-            enjoying this feature without limits, consider <br /> upgrading your
-            plan for unlimited access.
+            Welcome! We&apos;ve provided you with ₦10,000 in testing credits to explore our features. 
+            When your balance runs low, you&apos;ll need to top up your wallet to continue using our services.
           </Text>
           {/* <Button
             bg="white"
@@ -65,14 +60,14 @@ const WalletComponent = () => {
           borderRadius="10px"
           mt={4}
         >
-          <Progress value={50} w="100%" size="md" borderRadius="10px" />
+          <Progress value={20} w="100%" size="md" borderRadius="10px" />
 
           <HStack justifyContent="space-between" w="100%" mt={2}>
             <Text fontSize="14px" fontWeight="400" color="bodyText.200">
-              Free daily credits used
+              Available Balance
             </Text>
             <Text fontSize="md" fontWeight="600" color="bodyText.100">
-              2/3
+              ₦10,000
             </Text>
           </HStack>
 
@@ -90,7 +85,7 @@ const WalletComponent = () => {
                 <Image src="/images/naira.svg" alt="naira" />
               </Box>
               <Text fontSize={['xl', '2xl']} fontWeight="700" color="black">
-                {formatNumber(1000000)}
+                {formatNumber(10000)}
               </Text>
             </HStack>
             <Button

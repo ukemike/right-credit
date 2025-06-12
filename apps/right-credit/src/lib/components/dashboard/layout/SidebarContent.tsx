@@ -93,27 +93,6 @@ interface SidebarProps extends BoxProps {
   isLoading: boolean;
 }
 
-// {
-//   "address": null,
-//   "business_kyc": {},
-//   "business_verified": true,
-//   "cac_certificate_document_url": null,
-//   "cac_no": null,
-//   "country": null,
-//   "data_protection_officer": null,
-//   "name_of_directors": [],
-//   "operating_licence_document_url": null,
-//   "owner": {
-//       "email": "ukemike4@gmail.com",
-//       "first_name": "Michael",
-//       "id": 34,
-//       "last_name": "Uke",
-//       "role": null
-//   },
-//   "registered_name": null,
-//   "status_report_document_url": null
-// }
-
 const SidebarContent = ({
   onClose,
   user,

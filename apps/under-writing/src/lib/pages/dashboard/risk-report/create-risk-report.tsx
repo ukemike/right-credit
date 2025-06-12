@@ -14,6 +14,9 @@ import {
   AccordionItem,
   SimpleGrid,
   useToast,
+  Stack,
+  Radio,
+  RadioGroup,
 } from '@chakra-ui/react';
 import { Formik, Form } from 'formik';
 import { useRouter } from 'next/navigation';
@@ -31,6 +34,8 @@ import {
   NIGERIAN_STATES,
   NIGERIAN_BUSINESS_TYPES,
   NIGERIAN_BUSINESS_INDUSTRIES,
+  NIGERIAN_BUSINESS_EMPLOYMENT_TYPES,
+  getLGAsByState,
 } from '~/lib/utils/constants';
 
 const CreateRiskReport = () => {
@@ -103,7 +108,7 @@ const CreateRiskReport = () => {
             </Text>
           </HStack>
 
-          <HStack>
+          <HStack display='none'>
             <Text fontSize="14px" fontWeight="400" color="bodyText.100">
               You have used 1/3 trials for today
             </Text>
@@ -139,7 +144,7 @@ const CreateRiskReport = () => {
               {/* payday */}
               <Formik
                 initialValues={{
-                  loan_type: 'business',
+                  loan_type: 'payday',
                   title: '',
                   first_name: '',
                   middle_name: '',
@@ -193,27 +198,33 @@ const CreateRiskReport = () => {
                         town: values.residential_town,
                       },
                     },
-                    employment_details: {
-                      name_of_employer: values.name_of_employer,
-                      employment_type: values.employment_type,
-                      industry: values.employer_industry,
-                      employer_address: {
-                        address: values.employer_address,
-                        state: values.employer_state,
-                        town: values.employer_town,
-                      },
-                    },
-                    business_details: {
-                      name: values.business_name,
-                      registration_number: values.registration_number,
-                      business_type: values.business_type,
-                      industry: values.business_industry,
-                      business_address: {
-                        address: values.business_address,
-                        state: values.business_state,
-                        town: values.business_town,
-                      },
-                    },
+                    employment_details:
+                      values.loan_type === 'payday'
+                        ? {
+                            name_of_employer: values.name_of_employer,
+                            employment_type: values.employment_type,
+                            industry: values.employer_industry,
+                            employer_address: {
+                              address: values.employer_address,
+                              state: values.employer_state,
+                              town: values.employer_town,
+                            },
+                          }
+                        : null,
+                    business_details:
+                      values.loan_type === 'business'
+                        ? {
+                            name: values.business_name,
+                            registration_number: values.registration_number,
+                            business_type: values.business_type,
+                            industry: values.business_industry,
+                            business_address: {
+                              address: values.business_address,
+                              state: values.business_state,
+                              town: values.business_town,
+                            },
+                          }
+                        : null,
                     documents: {
                       bank_statement: values.bank_statement,
                     },
@@ -221,7 +232,7 @@ const CreateRiskReport = () => {
                   handleSubmit(structuredData);
                 }}
               >
-                {({ setFieldValue, errors }) => (
+                {({ setFieldValue, errors, values }) => (
                   <Form style={{ width: '100%' }}>
                     <Accordion allowToggle w="full">
                       <AccordionItem
@@ -392,11 +403,11 @@ const CreateRiskReport = () => {
                               placeholder="Select state"
                             />
 
-                            <Input
-                              label="City/Town"
+                            <Select
+                              label="LGA"
                               name="residential_town"
-                              type="text"
-                              placeholder="Enter city/town"
+                              options={getLGAsByState(values.residential_state)}
+                              placeholder="Select LGA"
                             />
                           </SimpleGrid>
                         </AccordionPanel>
@@ -430,7 +441,7 @@ const CreateRiskReport = () => {
                               fontSize="md"
                               fontWeight={600}
                             >
-                              Employment Details
+                              Loan Type
                             </Box>
                             <AccordionIcon
                               color="bodyText.200"
@@ -444,201 +455,259 @@ const CreateRiskReport = () => {
                           bg="white"
                           borderBottomRadius="10px"
                         >
-                          <SimpleGrid columns={[1, 2]} spacing={4}>
-                            <Input
-                              label="Name of Employer"
-                              name="name_of_employer"
-                              type="text"
-                              placeholder="Enter name of employer"
-                            />
-
-                            <Select
-                              label="Employment Type"
-                              name="employment_type"
-                              options={[
-                                { label: 'Full-Time', value: 'full_time' },
-                                { label: 'Part-Time', value: 'part_time' },
-                                { label: 'Contract', value: 'contract' },
-                                { label: 'Freelance', value: 'freelance' },
-                                { label: 'Internship', value: 'internship' },
-                                { label: 'Volunteer', value: 'volunteer' },
-                                {
-                                  label: 'Self-Employed',
-                                  value: 'self_employed',
-                                },
-                              ]}
-                              placeholder="Select employment type"
-                            />
-
-                            <Select
-                              label="Industry"
-                              name="employer_industry"
-                              options={[
-                                { label: 'Agriculture', value: 'agriculture' },
-                                {
-                                  label: 'Manufacturing',
-                                  value: 'manufacturing',
-                                },
-                                { label: 'Services', value: 'services' },
-                                {
-                                  label: 'Construction',
-                                  value: 'construction',
-                                },
-                                { label: 'Finance', value: 'finance' },
-                                { label: 'Technology', value: 'technology' },
-                                { label: 'Healthcare', value: 'healthcare' },
-                                { label: 'Education', value: 'education' },
-                                { label: 'Other', value: 'other' },
-                              ]}
-                            />
-
-                            <Input
-                              label="Years with Current Employer"
-                              name="years_with_current_employer"
-                              type="number"
-                              placeholder="Enter years with current employer"
-                            />
-                          </SimpleGrid>
-
-                          <VStack spacing={4} mt={4} alignItems="flex-start">
+                          <VStack spacing={2} alignItems="stretch" mt={2}>
                             <Text
-                              fontSize="md"
-                              fontWeight="600"
-                              color="headText.100"
+                              fontSize="14px"
+                              fontWeight="400"
+                              color="bodyText.100"
                             >
-                              Employer Address
+                              Select loan type
                             </Text>
-                            <Input
-                              label="Employer Address"
-                              name="employer_address"
-                              type="text"
-                              placeholder="Enter employer address"
-                            />
+                            <RadioGroup
+                              value={values.loan_type}
+                              onChange={(value) =>
+                                setFieldValue('loan_type', value)
+                              }
+                            >
+                              <Stack spacing={4} direction="row" w="100%">
+                                <Radio value="payday">
+                                  <Text
+                                    fontSize="14px"
+                                    fontWeight="500"
+                                    color="bodyText.200"
+                                  >
+                                    Personal Loan
+                                  </Text>
+                                </Radio>
+                                <Radio value="business">
+                                  <Text
+                                    fontSize="14px"
+                                    fontWeight="500"
+                                    color="bodyText.200"
+                                  >
+                                    Business Loan
+                                  </Text>
+                                </Radio>
+                              </Stack>
+                            </RadioGroup>
                           </VStack>
-
-                          <SimpleGrid columns={[1, 2]} spacing={4} mt={4}>
-                            <Select
-                              label="State"
-                              name="employer_state"
-                              options={NIGERIAN_STATES}
-                              placeholder="Select state"
-                            />
-
-                            <Input
-                              label="City/Town"
-                              name="employer_town"
-                              type="text"
-                              placeholder="Enter city/town"
-                            />
-                          </SimpleGrid>
                         </AccordionPanel>
                       </AccordionItem>
 
-                      <AccordionItem
-                        border="1px solid #E5E7EB"
-                        borderRadius="4px"
-                        mb={4}
-                      >
-                        <h2>
-                          <AccordionButton
-                            bg="#F9FBFC"
-                            color="black"
-                            borderRadius="4px"
-                            p={4}
-                            _expanded={{
-                              bg: '#F9FBFC',
-                              color: 'brand.100',
-                            }}
-                            _hover={{
-                              bg: '#F9FBFC',
-                              color: 'bodyText.200',
-                            }}
+                      {values.loan_type === 'payday' && (
+                        <AccordionItem
+                          border="1px solid #E5E7EB"
+                          borderRadius="4px"
+                          mb={4}
+                        >
+                          <h2>
+                            <AccordionButton
+                              bg="#F9FBFC"
+                              color="black"
+                              borderRadius="4px"
+                              p={4}
+                              _expanded={{
+                                bg: '#F9FBFC',
+                                color: 'brand.100',
+                              }}
+                              _hover={{
+                                bg: '#F9FBFC',
+                                color: 'bodyText.200',
+                              }}
+                            >
+                              <Box
+                                as="span"
+                                flex="1"
+                                textAlign="left"
+                                color="bodyText.200"
+                                fontSize="md"
+                                fontWeight={600}
+                              >
+                                Employment Details
+                              </Box>
+                              <AccordionIcon
+                                color="bodyText.200"
+                                fontSize="24px"
+                              />
+                            </AccordionButton>
+                          </h2>
+                          <AccordionPanel
+                            px={4}
+                            pb={4}
+                            bg="white"
+                            borderBottomRadius="10px"
                           >
-                            <Box
-                              as="span"
-                              flex="1"
-                              textAlign="left"
-                              color="bodyText.200"
-                              fontSize="md"
-                              fontWeight={600}
-                            >
-                              Business Details
-                            </Box>
-                            <AccordionIcon
-                              color="bodyText.200"
-                              fontSize="24px"
-                            />
-                          </AccordionButton>
-                        </h2>
-                        <AccordionPanel
-                          px={4}
-                          pb={4}
-                          bg="white"
-                          borderBottomRadius="10px"
+                            <SimpleGrid columns={[1, 2]} spacing={4}>
+                              <Input
+                                label="Name of Employer"
+                                name="name_of_employer"
+                                type="text"
+                                placeholder="Enter name of employer"
+                              />
+
+                              <Select
+                                label="Employment Type"
+                                name="employment_type"
+                                options={NIGERIAN_BUSINESS_EMPLOYMENT_TYPES}
+                                placeholder="Select employment type"
+                              />
+
+                              <Select
+                                label="Industry"
+                                name="employer_industry"
+                                options={NIGERIAN_BUSINESS_INDUSTRIES}
+                              />
+
+                              <Input
+                                label="Years with Current Employer"
+                                name="years_with_current_employer"
+                                type="number"
+                                placeholder="Enter years with current employer"
+                              />
+                            </SimpleGrid>
+
+                            <VStack spacing={4} mt={4} alignItems="flex-start">
+                              <Text
+                                fontSize="md"
+                                fontWeight="600"
+                                color="headText.100"
+                              >
+                                Employer Address
+                              </Text>
+                              <Input
+                                label="Employer Address"
+                                name="employer_address"
+                                type="text"
+                                placeholder="Enter employer address"
+                              />
+                            </VStack>
+
+                            <SimpleGrid columns={[1, 2]} spacing={4} mt={4}>
+                              <Select
+                                label="State"
+                                name="employer_state"
+                                options={NIGERIAN_STATES}
+                                placeholder="Select state"
+                              />
+
+                              <Select
+                                label="LGA"
+                                name="employer_town"
+                                options={getLGAsByState(values.employer_state)}
+                                placeholder="Select LGA"
+                              />
+                            </SimpleGrid>
+                          </AccordionPanel>
+                        </AccordionItem>
+                      )}
+
+                      {values.loan_type === 'business' && (
+                        <AccordionItem
+                          border="1px solid #E5E7EB"
+                          borderRadius="4px"
+                          mb={4}
                         >
-                          <SimpleGrid columns={[1, 2]} spacing={4}>
-                            <Input
-                              label="Name of Business"
-                              name="business_name"
-                              type="text"
-                              placeholder="Enter name of business"
-                            />
-
-                            <Input
-                              label="Registration Number"
-                              name="registration_number"
-                              type="text"
-                              placeholder="Enter registration number"
-                            />
-
-                            <Select
-                              label="Business Type"
-                              name="business_type"
-                              options={NIGERIAN_BUSINESS_TYPES}
-                              placeholder="Select business type"
-                            />
-
-                            <Select
-                              label="Industry"
-                              name="business_industry"
-                              options={NIGERIAN_BUSINESS_INDUSTRIES}
-                              placeholder="Select industry"
-                            />
-                          </SimpleGrid>
-
-                          <VStack spacing={4} mt={4} alignItems="flex-start">
-                            <Text
-                              fontSize="md"
-                              fontWeight="600"
-                              color="headText.100"
+                          <h2>
+                            <AccordionButton
+                              bg="#F9FBFC"
+                              color="black"
+                              borderRadius="4px"
+                              p={4}
+                              _expanded={{
+                                bg: '#F9FBFC',
+                                color: 'brand.100',
+                              }}
+                              _hover={{
+                                bg: '#F9FBFC',
+                                color: 'bodyText.200',
+                              }}
                             >
-                              Business address details
-                            </Text>
-                            <Input
-                              label="Business Address"
-                              name="business_address"
-                              type="text"
-                              placeholder="Enter business address"
-                            />
-                          </VStack>
+                              <Box
+                                as="span"
+                                flex="1"
+                                textAlign="left"
+                                color="bodyText.200"
+                                fontSize="md"
+                                fontWeight={600}
+                              >
+                                Business Details
+                              </Box>
+                              <AccordionIcon
+                                color="bodyText.200"
+                                fontSize="24px"
+                              />
+                            </AccordionButton>
+                          </h2>
+                          <AccordionPanel
+                            px={4}
+                            pb={4}
+                            bg="white"
+                            borderBottomRadius="10px"
+                          >
+                            <SimpleGrid columns={[1, 2]} spacing={4}>
+                              <Input
+                                label="Name of Business"
+                                name="business_name"
+                                type="text"
+                                placeholder="Enter name of business"
+                              />
 
-                          <SimpleGrid columns={[1, 2]} spacing={4} mt={4}>
-                            <Select
-                              label="State"
-                              name="business_state"
-                              options={NIGERIAN_STATES}
-                              placeholder="Select state"
-                            />
+                              <Input
+                                label="Registration Number"
+                                name="registration_number"
+                                type="text"
+                                placeholder="Enter registration number"
+                              />
 
-                            <Input
-                              label="City/Town"
-                              name="business_town"
-                              type="text"
-                              placeholder="Enter city/town"
-                            />
-                          </SimpleGrid>
-                        </AccordionPanel>
-                      </AccordionItem>
+                              <Select
+                                label="Business Type"
+                                name="business_type"
+                                options={NIGERIAN_BUSINESS_TYPES}
+                                placeholder="Select business type"
+                              />
+
+                              <Select
+                                label="Industry"
+                                name="business_industry"
+                                options={NIGERIAN_BUSINESS_INDUSTRIES}
+                                placeholder="Select industry"
+                              />
+                            </SimpleGrid>
+
+                            <VStack spacing={4} mt={4} alignItems="flex-start">
+                              <Text
+                                fontSize="md"
+                                fontWeight="600"
+                                color="headText.100"
+                              >
+                                Business address details
+                              </Text>
+                              <Input
+                                label="Business Address"
+                                name="business_address"
+                                type="text"
+                                placeholder="Enter business address"
+                              />
+                            </VStack>
+
+                            <SimpleGrid columns={[1, 2]} spacing={4} mt={4}>
+                              <Select
+                                label="State"
+                                name="business_state"
+                                options={NIGERIAN_STATES}
+                                placeholder="Select state"
+                              />
+
+                              <Select
+                                label="LGA"
+                                name="business_town"
+                                options={getLGAsByState(values.business_state)}
+                                placeholder="Select LGA"
+                              />
+                            </SimpleGrid>
+                          </AccordionPanel>
+                        </AccordionItem>
+                      )}
 
                       <AccordionItem
                         border="1px solid #E5E7EB"
