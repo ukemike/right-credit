@@ -1,0 +1,41 @@
+{
+  "name": "right-credit",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/right-credit",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/next:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/right-credit"
+      },
+      "configurations": {
+        "development": {
+          "outputPath": "apps/right-credit"
+        },
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/next:server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "right-credit:build",
+        "dev": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "right-credit:build:development",
+          "dev": true
+        },
+        "production": {
+          "buildTarget": "right-credit:build:production",
+          "dev": false
+        }
+      }
+    }
+  },
+  "tags": []
+} 

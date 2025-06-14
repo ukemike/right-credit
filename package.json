@@ -2,7 +2,9 @@
   "name": "@right-credit/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "vercel-build": "npm install --include=dev && cd apps/right-credit && next build"
+  },
   "private": true,
   "dependencies": {
     "@chakra-ui/anatomy": "^2.2.2",
