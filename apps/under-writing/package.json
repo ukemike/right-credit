@@ -2,9 +2,6 @@
   "name": "@right-credit/under-writing",
   "version": "0.0.1",
   "private": true,
-  "scripts": {
-    "vercel-build": "next build"
-  },
   "dependencies": {
     "next": "~15.2.4",
     "react": "19.0.0",
