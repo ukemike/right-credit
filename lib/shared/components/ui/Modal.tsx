@@ -9,7 +9,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import type { ModalType } from '~/lib/interfaces/ui.interface';
+import type { ModalType } from '@shared/interfaces/ui.interface';
 
 const ModalComponent = ({
   isOpen,

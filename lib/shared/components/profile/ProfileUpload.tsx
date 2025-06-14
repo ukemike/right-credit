@@ -12,7 +12,7 @@ const ProfileUpload = ({
   label,
   value,
   onChange,
-}: UploadCardProps): JSX.Element => {
+}: UploadCardProps) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -21,7 +21,9 @@ const ProfileUpload = ({
       setPreviewUrl(url);
       return () => URL.revokeObjectURL(url);
     }
-    return () => {};
+    return () => {
+      console.log('unmounting');
+    };
   }, [value]);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {

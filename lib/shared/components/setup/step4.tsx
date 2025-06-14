@@ -13,8 +13,8 @@ import { useState } from 'react';
 
 import Button from '../ui/Button';
 import Modal from '../ui/Modal';
-import { setSetupStep } from '~/lib/redux/slices/authSlice';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/store';
+import { setSetupStep } from '@shared/redux/slices/authSlice';
+import { useAppDispatch, useAppSelector } from '@shared/redux/store';
 
 import UploadCard from './uploadCard';
 

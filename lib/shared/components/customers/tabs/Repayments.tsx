@@ -19,7 +19,7 @@ import { useState } from 'react';
 import AddRepayment from '../../modals/AddRepayment';
 import Button from '../../ui/Button';
 import Modal from '../../ui/Modal';
-import { formatCurrency } from '~/lib/utils/formatter';
+import { formatCurrency } from '@shared/utils/formatter';
 
 const Repayments = () => {
   const repaymentsData = [

@@ -9,7 +9,7 @@ import {
   Image,
 } from '@chakra-ui/react';
 
-import type { InputProps } from '~/lib/interfaces/ui.interface';
+import type { InputProps } from '@shared/interfaces/ui.interface';
 
 const Input2 = ({
   type,

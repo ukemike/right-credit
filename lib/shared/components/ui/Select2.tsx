@@ -5,7 +5,7 @@ import {
 } from '@chakra-ui/react';
 import { MdArrowDropDown } from 'react-icons/md';
 
-import type { SelectProps } from '~/lib/interfaces/ui.interface';
+import type { SelectProps } from '@shared/interfaces/ui.interface';
 
 const Select2 = ({
   name,

@@ -1,6 +1,6 @@
 import { NumericFormat } from 'react-number-format';
 
-import type { NairaNumberFormatProps } from '~/lib/interfaces/ui.interface';
+import type { NairaNumberFormatProps } from '@shared/interfaces/ui.interface';
 
 const NairaNumberFormat = ({
   value,

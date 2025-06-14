@@ -8,24 +8,15 @@ import {
   Stack,
   Text,
   VStack,
-  Link as ChakraLink,
   Badge,
-  useToast,
 } from '@chakra-ui/react';
 import { Formik, Form } from 'formik';
-import { useRouter } from 'next/navigation';
 
 import Button from '../ui/Button';
 import Input from '../ui/Input';
-import { useResetPasswordMutation } from '@shared/redux/services/auth.service';
 import { resetSchema } from '@shared/schemas/auth.schema';
 
 const ResetPassword = () => {
-  const router = useRouter();
-  const toast = useToast();
-
-  const [resetPassword, { isLoading }] = useResetPasswordMutation();
-
   const handleLogin = (values: any) => {
     console.log(values);
   };

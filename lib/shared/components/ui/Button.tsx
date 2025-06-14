@@ -1,6 +1,6 @@
 import { Button as ChakraButton } from '@chakra-ui/react';
 
-import type { ButtonType } from '~/lib/interfaces/ui.interface';
+import type { ButtonType } from '@shared/interfaces/ui.interface';
 
 const Button = (props: ButtonType) => {
   const {

@@ -13,8 +13,8 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 
 import Button from '../ui/Button';
-import { setSetupStep } from '~/lib/redux/slices/authSlice';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/store';
+import { setSetupStep } from '@shared/redux/slices/authSlice';
+import { useAppDispatch, useAppSelector } from '@shared/redux/store';
 
 interface Question {
   id: number;

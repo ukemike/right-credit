@@ -17,7 +17,7 @@ import { Bar } from 'react-chartjs-2';
 
 import { formatCurrency } from '@shared/utils/formatter';
 
-import { barChartConfig, weeklyBarChartConfig } from './ChartConfig';
+import { barChartConfig } from './ChartConfig';
 
 type BankStatementData = {
   SN: number;

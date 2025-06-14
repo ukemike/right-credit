@@ -2,7 +2,7 @@
 
 import { Box, Tabs, TabList, TabPanels, TabPanel, Tab } from '@chakra-ui/react';
 
-import EmptyState from '~/lib/components/EmptyState';
+import EmptyState from '@shared/components/EmptyState';
 
 import LoanSchedule from './tabs/LoanSchedule';
 import LoanSummary from './tabs/LoanSummary';

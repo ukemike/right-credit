@@ -2,7 +2,7 @@
 
 import { Grid, GridItem } from '@chakra-ui/react';
 
-import { useAppSelector } from '~/lib/redux/store';
+import { useAppSelector } from '@shared/redux/store';
 
 import SetupLeft from './setupLeft';
 import Step1 from './step1';

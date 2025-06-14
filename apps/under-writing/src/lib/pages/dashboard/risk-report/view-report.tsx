@@ -99,7 +99,7 @@ const ViewRiskReport = () => {
   const router = useRouter();
   const { reportId } = useParams();
 
-  const { data: riskAnalysis, isLoading } = useGetRiskAnalysisByIdQuery(reportId);
+  const { data: riskAnalysis } = useGetRiskAnalysisByIdQuery(reportId);
   console.log(riskAnalysis, 'riskAnalysis');
 
   return (

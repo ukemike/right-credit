@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 
-import Button from '~/lib/components/ui/Button';
+import Button from '@shared/components/ui/Button';
 
 const ProfileTabs = () => {
   const router = useRouter();

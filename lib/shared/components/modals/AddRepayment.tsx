@@ -3,7 +3,7 @@ import { Form, Formik } from 'formik';
 
 import Input from '../ui/Input';
 import TextArea from '../ui/TextArea';
-import Button from '~/lib/components/ui/Button';
+import Button from '@shared/components/ui/Button';
 
 const AddRepayment = () => {
   return (

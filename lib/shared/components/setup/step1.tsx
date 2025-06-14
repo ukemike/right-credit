@@ -5,9 +5,9 @@ import { Form, Formik, FieldArray, Field } from 'formik';
 import Button from '../ui/Button';
 import Input from '../ui/Input';
 import Select from '../ui/Select';
-import { setSetupStep } from '~/lib/redux/slices/authSlice';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/store';
-import { completeProfileSchema } from '~/lib/schemas/auth.schema';
+import { setSetupStep } from '@shared/redux/slices/authSlice';
+import { useAppDispatch, useAppSelector } from '@shared/redux/store';
+import { completeProfileSchema } from '@shared/schemas/auth.schema';
 
 const Step1 = () => {
   const dispatch = useAppDispatch();

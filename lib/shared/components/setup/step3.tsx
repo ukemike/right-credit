@@ -6,9 +6,9 @@ import { Form, Formik } from 'formik';
 
 import Button from '../ui/Button';
 import Input from '../ui/Input';
-import { setSetupStep } from '~/lib/redux/slices/authSlice';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/store';
-import { dpoSchema } from '~/lib/schemas/auth.schema';
+import { setSetupStep } from '@shared/redux/slices/authSlice';
+import { useAppDispatch, useAppSelector } from '@shared/redux/store';
+import { dpoSchema } from '@shared/schemas/auth.schema';
 
 const Step3 = () => {
   const dispatch = useAppDispatch();

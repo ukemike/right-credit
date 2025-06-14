@@ -22,11 +22,11 @@ import ModalComponent from '@shared/components/ui/Modal';
 
 const SettingsComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [type, setType] = useState<'user' | 'role'>('user');
+  // const [type, setType] = useState<'user' | 'role'>('user');
 
   const handleModal = ({ type }: { type: 'user' | 'role' }) => {
     setIsOpen(!isOpen);
-    setType(type);
+    // setType(type);
   };
 
   return (
