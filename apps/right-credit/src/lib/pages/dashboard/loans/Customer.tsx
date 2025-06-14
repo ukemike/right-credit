@@ -19,9 +19,9 @@ import {
 } from '@chakra-ui/react';
 import { useRouter, useParams } from 'next/navigation';
 
-import DashboardLayout from '~/lib/components/dashboard/layout/DashboardLayout';
-import EmptyState from '~/lib/components/EmptyState';
-import Button from '~/lib/components/ui/Button';
+import DashboardLayout from '~/lib/components/layout/DashboardLayout';
+import EmptyState from '@shared/components/EmptyState';
+import Button from '@shared/components/ui/Button';
 
 const CreateCustomer = () => {
   const router = useRouter();

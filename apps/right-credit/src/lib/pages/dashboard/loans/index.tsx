@@ -1,5 +1,5 @@
-import DashboardLayout from '~/lib/components/dashboard/layout/DashboardLayout';
-import LoansComponent from '~/lib/components/dashboard/pages/loans';
+import DashboardLayout from '~/lib/components/layout/DashboardLayout';
+import LoansComponent from '@shared/components/dashboard/pages/loans';
 
 const Loans = () => {
   return (

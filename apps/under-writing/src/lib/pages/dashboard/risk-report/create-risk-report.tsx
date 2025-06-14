@@ -22,13 +22,13 @@ import { Formik, Form } from 'formik';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import UploadCard from '~/lib/components/customers/uploadCard';
-import DashboardLayout from '~/lib/components/dashboard/layout/DashboardLayout';
-import Button from '~/lib/components/ui/Button';
-import Input from '~/lib/components/ui/Input';
-import Select from '~/lib/components/ui/Select';
-import { useCreateRiskMutation } from '~/lib/redux/services/risk.service';
-import { riskSchema } from '~/lib/schemas/risk.shema';
+import UploadCard from '@shared/components/customers/uploadCard';
+import DashboardLayout from '@shared/components/dashboard/layout/DashboardLayout';
+import Button from '@shared/components/ui/Button';
+import Input from '@shared/components/ui/Input';
+import Select from '@shared/components/ui/Select';
+import { useCreateRiskMutation } from '@shared/redux/services/risk.service';
+import { riskSchema } from '@shared/schemas/risk.shema';
 import {
   NIGERIAN_EDUCATION_LEVELS,
   NIGERIAN_STATES,
@@ -36,7 +36,7 @@ import {
   NIGERIAN_BUSINESS_INDUSTRIES,
   NIGERIAN_BUSINESS_EMPLOYMENT_TYPES,
   getLGAsByState,
-} from '~/lib/utils/constants';
+} from '@shared/utils/constants';
 
 const CreateRiskReport = () => {
   const router = useRouter();
@@ -60,8 +60,8 @@ const CreateRiskReport = () => {
       .unwrap()
       .then(() => {
         toast({
-          title: 'Risk Report Created',
-          description: 'Risk Report Created Successfully',
+          title: 'Risk Report Submitted',
+          description: 'Your risk report is in progress and will be processed shortly',
           status: 'success',
           duration: 5000,
           isClosable: true,
@@ -234,6 +234,52 @@ const CreateRiskReport = () => {
               >
                 {({ setFieldValue, errors, values }) => (
                   <Form style={{ width: '100%' }}>
+                    {/* Loan Type Selection - Moved outside accordion */}
+                    <Box 
+                      border="1px solid #E5E7EB"
+                      borderRadius="4px"
+                      mb={4}
+                      p={4}
+                      bg="white"
+                    >
+                      <VStack spacing={2} alignItems="stretch">
+                        <Text
+                          fontSize="md"
+                          fontWeight="600"
+                          color="bodyText.200"
+                        >
+                          Loan Type
+                        </Text>
+                        <RadioGroup
+                          value={values.loan_type}
+                          onChange={(value) =>
+                            setFieldValue('loan_type', value)
+                          }
+                        >
+                          <Stack spacing={4} direction="row" w="100%">
+                            <Radio value="payday">
+                              <Text
+                                fontSize="14px"
+                                fontWeight="500"
+                                color="bodyText.200"
+                              >
+                                Personal Loan
+                              </Text>
+                            </Radio>
+                            <Radio value="business">
+                              <Text
+                                fontSize="14px"
+                                fontWeight="500"
+                                color="bodyText.200"
+                              >
+                                Business Loan
+                              </Text>
+                            </Radio>
+                          </Stack>
+                        </RadioGroup>
+                      </VStack>
+                    </Box>
+
                     <Accordion allowToggle w="full">
                       <AccordionItem
                         border="1px solid #E5E7EB"
@@ -355,11 +401,6 @@ const CreateRiskReport = () => {
                                 { label: 'Divorced', value: 'divorced' },
                                 { label: 'Widowed', value: 'widowed' },
                                 { label: 'Separated', value: 'separated' },
-                                {
-                                  label: 'Prefer not to say',
-                                  value: 'prefer_not_to_say',
-                                },
-                                { label: 'Unknown', value: 'unknown' },
                               ]}
                               placeholder="Select marital status"
                             />
@@ -410,87 +451,6 @@ const CreateRiskReport = () => {
                               placeholder="Select LGA"
                             />
                           </SimpleGrid>
-                        </AccordionPanel>
-                      </AccordionItem>
-
-                      <AccordionItem
-                        border="1px solid #E5E7EB"
-                        borderRadius="4px"
-                        mb={4}
-                      >
-                        <h2>
-                          <AccordionButton
-                            bg="#F9FBFC"
-                            color="black"
-                            borderRadius="4px"
-                            p={4}
-                            _expanded={{
-                              bg: '#F9FBFC',
-                              color: 'brand.100',
-                            }}
-                            _hover={{
-                              bg: '#F9FBFC',
-                              color: 'bodyText.200',
-                            }}
-                          >
-                            <Box
-                              as="span"
-                              flex="1"
-                              textAlign="left"
-                              color="bodyText.200"
-                              fontSize="md"
-                              fontWeight={600}
-                            >
-                              Loan Type
-                            </Box>
-                            <AccordionIcon
-                              color="bodyText.200"
-                              fontSize="24px"
-                            />
-                          </AccordionButton>
-                        </h2>
-                        <AccordionPanel
-                          px={4}
-                          pb={4}
-                          bg="white"
-                          borderBottomRadius="10px"
-                        >
-                          <VStack spacing={2} alignItems="stretch" mt={2}>
-                            <Text
-                              fontSize="14px"
-                              fontWeight="400"
-                              color="bodyText.100"
-                            >
-                              Select loan type
-                            </Text>
-                            <RadioGroup
-                              value={values.loan_type}
-                              onChange={(value) =>
-                                setFieldValue('loan_type', value)
-                              }
-                            >
-                              <Stack spacing={4} direction="row" w="100%">
-                                <Radio value="payday">
-                                  <Text
-                                    fontSize="14px"
-                                    fontWeight="500"
-                                    color="bodyText.200"
-                                  >
-                                    Personal Loan
-                                  </Text>
-                                </Radio>
-                                <Radio value="business">
-                                  <Text
-                                    fontSize="14px"
-                                    fontWeight="500"
-                                    color="bodyText.200"
-                                  >
-                                    Business Loan
-                                  </Text>
-                                </Radio>
-                              </Stack>
-                            </RadioGroup>
-                          </VStack>
                         </AccordionPanel>
                       </AccordionItem>
 

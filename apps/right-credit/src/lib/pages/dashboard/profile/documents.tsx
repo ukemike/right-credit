@@ -1,5 +1,5 @@
-import DashboardLayout from '~/lib/components/dashboard/layout/DashboardLayout';
-import DocumentsComponent from '~/lib/components/dashboard/pages/profile/documents';
+import DashboardLayout from '~/lib/components/layout/DashboardLayout';
+import DocumentsComponent from '@shared/components/dashboard/pages/profile/documents';
 
 const Documents = () => {
   return (

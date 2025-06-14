@@ -1,5 +1,5 @@
-import DashboardLayout from '~/lib/components/dashboard/layout/DashboardLayout';
-import SettingsComponent from '~/lib/components/dashboard/pages/settings';
+import DashboardLayout from '~/lib/components/layout/DashboardLayout';
+import SettingsComponent from '@shared/components/dashboard/pages/settings';
 
 const Settings = () => {
   return (

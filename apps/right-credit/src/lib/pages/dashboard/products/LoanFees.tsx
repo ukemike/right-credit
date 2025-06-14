@@ -19,8 +19,8 @@ import {
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import DashboardLayout from '~/lib/components/dashboard/layout/DashboardLayout';
-import Button from '~/lib/components/ui/Button';
+import DashboardLayout from '~/lib/components/layout/DashboardLayout';
+import Button from '@shared/components/ui/Button';
 
 const LoanFees = () => {
   const router = useRouter();

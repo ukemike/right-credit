@@ -1,5 +1,5 @@
-import DashboardLayout from '~/lib/components/dashboard/layout/DashboardLayout';
-import CustomersComponent from '~/lib/components/dashboard/pages/Customers';
+import DashboardLayout from '~/lib/components/layout/DashboardLayout';
+import CustomersComponent from '@shared/components/dashboard/pages/Customers';
 
 const Customers = () => {
   return (

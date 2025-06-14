@@ -9,5 +9,10 @@
     {
       "path": "./apps/under-writing"
     }
-  ]
+  ],
+  "compilerOptions": {
+    "paths": {
+      "@shared/*": ["./lib/shared/*"]
+    }
+  }
 }

@@ -3,10 +3,10 @@
 import { Grid, GridItem, Box } from '@chakra-ui/react';
 import { useParams } from 'next/navigation';
 
-import CustomerHeader from '~/lib/components/customers/CustomerHeader';
-import CustomerProfile from '~/lib/components/customers/CustomerProfile';
-import CustomerTabs from '~/lib/components/customers/CustomerTabs';
-import DashboardLayout from '~/lib/components/dashboard/layout/DashboardLayout';
+import CustomerHeader from '@shared/components/customers/CustomerHeader';
+import CustomerProfile from '@shared/components/customers/CustomerProfile';
+import CustomerTabs from '@shared/components/customers/CustomerTabs';
+import DashboardLayout from '~/lib/components/layout/DashboardLayout';
 
 const CreateCustomer = () => {
   const { customerId } = useParams();

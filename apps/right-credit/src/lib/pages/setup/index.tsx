@@ -1,4 +1,4 @@
-import CompleteProfile from '~/lib/components/setup/completeProile';
+import CompleteProfile from '@shared/components/setup/completeProile';
 
 const index = () => {
   return <CompleteProfile />;

@@ -22,11 +22,11 @@ import { Formik, Form } from 'formik';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import DashboardLayout from '~/lib/components/dashboard/layout/DashboardLayout';
-import Button from '~/lib/components/ui/Button';
-import Input from '~/lib/components/ui/Input';
-import ModalComponent from '~/lib/components/ui/Modal';
-import Select from '~/lib/components/ui/Select';
+import DashboardLayout from '~/lib/components/layout/DashboardLayout';
+import Button from '@shared/components/ui/Button';
+import Input from '@shared/components/ui/Input';
+import ModalComponent from '@shared/components/ui/Modal';
+import Select from '@shared/components/ui/Select';
 
 interface FormValues {
   name: string;

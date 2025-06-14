@@ -1,5 +1,5 @@
-import DashboardLayout from '~/lib/components/dashboard/layout/DashboardLayout';
-import ProfileComponent from '~/lib/components/dashboard/pages/profile';
+import DashboardLayout from '~/lib/components/layout/DashboardLayout';
+import ProfileComponent from '@shared/components/dashboard/pages/profile';
 
 const Profile = () => {
   return (

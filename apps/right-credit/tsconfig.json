@@ -26,10 +26,13 @@
       ],
       "~/*": [
         "./src/*"
+      ],
+      "@shared/*": [
+        "../../lib/shared/*"
       ]
     },
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDir": "../..",
     "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo"
   },
   "include": [
@@ -40,7 +43,9 @@
     "src/**/*.jsx",
     "src/**/*.ts",
     "src/**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "../../lib/shared/**/*.ts",
+    "../../lib/shared/**/*.tsx"
   ],
   "exclude": [
     "out-tsc",

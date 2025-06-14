@@ -1,5 +1,5 @@
-import DashboardLayout from '~/lib/components/dashboard/layout/DashboardLayout';
-import BusinessInfoComponent from '~/lib/components/dashboard/pages/profile/business-info';
+import DashboardLayout from '@/lib/components/layout/DashboardLayout';
+import BusinessInfoComponent from '@shared/components/dashboard/pages/profile/business-info';
 
 const BusinessInfo = () => {
   return (

@@ -1,5 +1,5 @@
-import DashboardLayout from '~/lib/components/dashboard/layout/DashboardLayout';
-import RiskReportComponent from '~/lib/components/dashboard/pages/risk-report/risk-report';
+import DashboardLayout from '@/lib/components/layout/DashboardLayout';
+import RiskReportComponent from '@shared/components/dashboard/pages/risk-report/risk-report';
 
 const RiskReport = () => {
   return (

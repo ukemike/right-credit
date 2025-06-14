@@ -1,5 +1,5 @@
-import DashboardLayout from '~/lib/components/dashboard/layout/DashboardLayout';
-import DataProtectionOfficerComponent from '~/lib/components/dashboard/pages/profile/data-protection-officer';
+import DashboardLayout from '@/lib/components/layout/DashboardLayout';
+import DataProtectionOfficerComponent from '@shared/components/dashboard/pages/profile/data-protection-officer';
 
 const DataProtectionOfficer = () => {
   return (

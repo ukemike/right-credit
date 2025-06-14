@@ -1,5 +1,5 @@
-import DashboardLayout from '~/lib/components/dashboard/layout/DashboardLayout';
-import SecurityComponent from '~/lib/components/dashboard/pages/profile/security';
+import DashboardLayout from '~/lib/components/layout/DashboardLayout';
+import SecurityComponent from '@shared/components/dashboard/pages/profile/security';
 
 const Security = () => {
   return (

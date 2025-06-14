@@ -1,4 +1,4 @@
-import VerifyComponent from '~/lib/components/auth/verify';
+import VerifyComponent from '@shared/components/auth/verify';
 
 const Verify = () => {
   return <VerifyComponent />;

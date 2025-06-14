@@ -1,5 +1,5 @@
-import DashboardLayout from '~/lib/components/dashboard/layout/DashboardLayout';
-import WalletComponent from '~/lib/components/dashboard/pages/wallet';
+import DashboardLayout from '@/lib/components/layout/DashboardLayout';
+import WalletComponent from '@shared/components/dashboard/pages/wallet';
 
 const Wallet = () => {
   return (

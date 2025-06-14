@@ -1,5 +1,5 @@
-import DashboardLayout from '~/lib/components/dashboard/layout/DashboardLayout';
-import GetStartedComponent from '~/lib/components/dashboard/pages/get-started';
+import DashboardLayout from '~/lib/components/layout/DashboardLayout';
+import GetStartedComponent from '@shared/components/dashboard/pages/get-started';
 
 const GetStarted = () => {
   return (

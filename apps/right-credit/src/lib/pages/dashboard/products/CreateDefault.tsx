@@ -21,11 +21,11 @@ import type { FormikProps } from 'formik';
 import { Formik, Form } from 'formik';
 import { useRouter } from 'next/navigation';
 
-import DashboardLayout from '~/lib/components/dashboard/layout/DashboardLayout';
-import Button from '~/lib/components/ui/Button';
-import Input from '~/lib/components/ui/Input';
-import Select from '~/lib/components/ui/Select';
-import TextArea from '~/lib/components/ui/TextArea';
+import DashboardLayout from '~/lib/components/layout/DashboardLayout';
+import Button from '@shared/components/ui/Button';
+import Input from '@shared/components/ui/Input';
+import Select from '@shared/components/ui/Select';
+import TextArea from '@shared/components/ui/TextArea';
 
 interface FormValues {
   name: string;

@@ -1,4 +1,4 @@
-import VerifyResetComponent from '~/lib/components/auth/verify-reset';
+import VerifyResetComponent from '@shared/components/auth/verify-reset';
 
 const VerifySuccess = () => {
   return <VerifyResetComponent />;

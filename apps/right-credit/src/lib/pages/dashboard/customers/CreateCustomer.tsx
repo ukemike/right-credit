@@ -14,13 +14,13 @@ import { Formik, Form } from 'formik';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import UploadCard from '~/lib/components/customers/uploadCard';
-import DashboardLayout from '~/lib/components/dashboard/layout/DashboardLayout';
-import Button from '~/lib/components/ui/Button';
-import Input from '~/lib/components/ui/Input';
-import Select from '~/lib/components/ui/Select';
-import { setCreateCustomerStep } from '~/lib/redux/slices/authSlice';
-import { useAppSelector, useAppDispatch } from '~/lib/redux/store';
+import UploadCard from '@shared/components/customers/uploadCard';
+import DashboardLayout from '~/lib/components/layout/DashboardLayout';
+import Button from '@shared/components/ui/Button';
+import Input from '@shared/components/ui/Input';
+import Select from '@shared/components/ui/Select';
+import { setCreateCustomerStep } from '@shared/redux/slices/authSlice';
+import { useAppSelector, useAppDispatch } from '@shared/redux/store';
 
 interface FormValues {
   borrowerId: string;

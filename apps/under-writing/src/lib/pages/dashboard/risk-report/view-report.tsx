@@ -10,21 +10,22 @@ import {
   LinearScale,
   BarElement,
 } from 'chart.js';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
-import DashboardLayout from '~/lib/components/dashboard/layout/DashboardLayout';
-import AffordabilityAssessment from '~/lib/components/risk-report/AffordabilityAssessment';
-import BankStatementAnalysis from '~/lib/components/risk-report/BankStatementAnalysis';
-import BorrowerInformation from '~/lib/components/risk-report/BorrowerInformation';
-import CreditBehavior from '~/lib/components/risk-report/CreditBehavior';
-import DebtBurdenAndIncomeAssessment from '~/lib/components/risk-report/DebtBurdenAndIncomeAssessment';
-import DemographicLocationAssessment from '~/lib/components/risk-report/DemographicLocationAssessment';
+import DashboardLayout from '@/lib/components/layout/DashboardLayout';
+import AffordabilityAssessment from '@shared/components/risk-report/AffordabilityAssessment';
+import BankStatementAnalysis from '@shared/components/risk-report/BankStatementAnalysis';
+import BorrowerInformation from '@shared/components/risk-report/BorrowerInformation';
+import CreditBehavior from '@shared/components/risk-report/CreditBehavior';
+import DebtBurdenAndIncomeAssessment from '@shared/components/risk-report/DebtBurdenAndIncomeAssessment';
+import DemographicLocationAssessment from '@shared/components/risk-report/DemographicLocationAssessment';
 import {
   createGaugeConfig,
   riskLabels,
-} from '~/lib/components/risk-report/GaugeConfig';
-import RiskScoreGauges from '~/lib/components/risk-report/RiskScoreGauges';
-import Button from '~/lib/components/ui/Button';
+} from '@shared/components/risk-report/GaugeConfig';
+import RiskScoreGauges from '@shared/components/risk-report/RiskScoreGauges';
+import Button from '@shared/components/ui/Button';
+import { useGetRiskAnalysisByIdQuery } from '@shared/redux/services/risk.service';
 
 // Register chart.js components
 ChartJS.register(
@@ -96,6 +97,10 @@ const incomeAssessmentConfig = createGaugeConfig(160, 1000, '#C90B2F');
 
 const ViewRiskReport = () => {
   const router = useRouter();
+  const { reportId } = useParams();
+
+  const { data: riskAnalysis, isLoading } = useGetRiskAnalysisByIdQuery(reportId);
+  console.log(riskAnalysis, 'riskAnalysis');
 
   return (
     <DashboardLayout showSidebar={false} bg="#F7F8FA" px="0">
