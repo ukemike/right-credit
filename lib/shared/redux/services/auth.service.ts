@@ -13,7 +13,6 @@ export const authApi = createApi({
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['Auth'],
     }),
 
     register: builder.mutation({
@@ -22,7 +21,6 @@ export const authApi = createApi({
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['Auth'],
     }),
 
     refresh: builder.mutation({
@@ -30,7 +28,6 @@ export const authApi = createApi({
         url: `auth/refresh`,
         method: 'POST',
       }),
-      invalidatesTags: ['Auth'],
     }),
 
     logout: builder.mutation({
@@ -38,7 +35,6 @@ export const authApi = createApi({
         url: `auth/logout`,
         method: 'POST',
       }),
-      invalidatesTags: ['Auth'],
     }),
 
     resetPassword: builder.mutation({
@@ -47,7 +43,6 @@ export const authApi = createApi({
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['Auth'],
     }),
 
     forgotPassword: builder.mutation({
@@ -56,7 +51,6 @@ export const authApi = createApi({
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['Auth'],
     }),
 
     updateProfile: builder.mutation({
