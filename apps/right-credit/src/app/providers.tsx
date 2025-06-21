@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 
 import { Chakra as ChakraProvider } from '@shared/components/Chakra';
 import { store } from '@shared/redux/store';
-import '~/lib/styles/globals.css';
+import '@shared/styles/globals.css';
 import 'focus-visible/dist/focus-visible';
 
 const Providers = ({ children }: { children: React.ReactNode }) => {

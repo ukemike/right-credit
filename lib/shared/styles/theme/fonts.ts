@@ -4,37 +4,37 @@ import localFont from 'next/font/local';
 const InstrumentSans = localFont({
   src: [
     {
-      path: '../../../../public/font/instrument-sans/InstrumentSans-Regular.ttf',
+      path: '../../assets/fonts/instrument-sans/InstrumentSans-Regular.ttf',
       weight: '400',
       style: 'normal',
     },
     {
-      path: '../../../../public/font/instrument-sans/InstrumentSans-Medium.ttf',
+      path: '../../assets/fonts/instrument-sans/InstrumentSans-Medium.ttf',
       weight: '500',
       style: 'normal',
     },
     {
-      path: '../../../../public/font/instrument-sans/InstrumentSans-MediumItalic.ttf',
+      path: '../../assets/fonts/instrument-sans/InstrumentSans-MediumItalic.ttf',
       weight: '500',
       style: 'italic',
     },
     {
-      path: '../../../../public/font/instrument-sans/InstrumentSans-SemiBold.ttf',
+      path: '../../assets/fonts/instrument-sans/InstrumentSans-SemiBold.ttf',
       weight: '600',
       style: 'normal',
     },
     {
-      path: '../../../../public/font/instrument-sans/InstrumentSans-SemiBoldItalic.ttf',
+      path: '../../assets/fonts/instrument-sans/InstrumentSans-SemiBoldItalic.ttf',
       weight: '600',
       style: 'italic',
     },
     {
-      path: '../../../../public/font/instrument-sans/InstrumentSans-Bold.ttf',
+      path: '../../assets/fonts/instrument-sans/InstrumentSans-Bold.ttf',
       weight: '700',
       style: 'normal',
     },
     {
-      path: '../../../../public/font/instrument-sans/InstrumentSans-BoldItalic.ttf',
+      path: '../../assets/fonts/instrument-sans/InstrumentSans-BoldItalic.ttf',
       weight: '700',
       style: 'italic',
     },

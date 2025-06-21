@@ -6,7 +6,7 @@ type RootLayoutProps = {
   children: React.ReactNode;
 };
 
-const APP_NAME = 'Lending';
+const APP_NAME = 'Lending Loan Management';
 
 export const metadata: Metadata = {
   title: { default: APP_NAME, template: '%s | Lending' },
