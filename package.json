@@ -2,18 +2,7 @@
   "name": "@right-credit/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {
-    "build:right-credit": "nx build right-credit --prod",
-    "build:under-writing": "nx build under-writing --prod",
-    "deploy:right-credit": "nx build right-credit --prod",
-    "deploy:under-writing": "nx build under-writing --prod",
-    "dev:right-credit": "nx dev right-credit",
-    "dev:under-writing": "nx dev under-writing",
-    "start:right-credit": "nx start right-credit",
-    "start:under-writing": "nx start under-writing",
-    "lint:all": "nx run-many -t lint",
-    "build:all": "nx run-many -t build"
-  },
+  "scripts": {},
   "private": true,
   "dependencies": {
     "@chakra-ui/anatomy": "^2.2.2",
