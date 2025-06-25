@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "apps/right-credit/package.json",
+      "use": "@vercel/next"
+    },
+    {
+      "src": "apps/under-writing/package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "functions": {
+    "apps/right-credit/src/app/**": {
+      "runtime": "nodejs18.x"
+    },
+    "apps/under-writing/src/app/**": {
+      "runtime": "nodejs18.x"
+    }
+  }
+} 
