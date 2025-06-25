@@ -3,16 +3,16 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build:right-credit": "npx nx build right-credit --prod",
-    "build:under-writing": "npx nx build under-writing --prod",
-    "deploy:right-credit": "npx nx build right-credit --prod",
-    "deploy:under-writing": "npx nx build under-writing --prod",
-    "dev:right-credit": "npx nx dev right-credit",
-    "dev:under-writing": "npx nx dev under-writing",
-    "start:right-credit": "npx nx start right-credit",
-    "start:under-writing": "npx nx start under-writing",
-    "lint:all": "npx nx run-many -t lint",
-    "build:all": "npx nx run-many -t build"
+    "build:right-credit": "nx build right-credit --prod",
+    "build:under-writing": "nx build under-writing --prod",
+    "deploy:right-credit": "nx build right-credit --prod",
+    "deploy:under-writing": "nx build under-writing --prod",
+    "dev:right-credit": "nx dev right-credit",
+    "dev:under-writing": "nx dev under-writing",
+    "start:right-credit": "nx start right-credit",
+    "start:under-writing": "nx start under-writing",
+    "lint:all": "nx run-many -t lint",
+    "build:all": "nx run-many -t build"
   },
   "private": true,
   "dependencies": {
