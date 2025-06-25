@@ -1,0 +1,6 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "apps/right-credit/.next",
+  "installCommand": "npm install",
+  "framework": null
+} 
