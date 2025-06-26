@@ -1,7 +1,0 @@
-{
-  "buildCommand": "npm run build --workspace=@right-credit/right-credit",
-  "outputDirectory": "apps/right-credit/.next",
-  "installCommand": "npm install",
-  "framework": null,
-  "cwd": "apps/right-credit"
-} 

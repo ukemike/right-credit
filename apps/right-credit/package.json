@@ -2,11 +2,6 @@
   "name": "@right-credit/right-credit",
   "version": "0.0.1",
   "private": true,
-  "scripts": {
-    "build": "next build",
-    "dev": "next dev",
-    "start": "next start"
-  },
   "dependencies": {
     "next": "~15.2.4",
     "react": "19.0.0",
