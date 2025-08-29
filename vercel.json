@@ -2,6 +2,5 @@
   "buildCommand": "npx nx build @right-credit/under-writing",
   "outputDirectory": "apps/under-writing/.next",
   "installCommand": "npm install",
-  "framework": "nextjs",
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD ./apps/under-writing"
+  "framework": "nextjs"
 }
