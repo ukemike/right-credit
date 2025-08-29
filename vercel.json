@@ -1,6 +1,6 @@
 {
-  "buildCommand": "./node_modules/.bin/nx build @right-credit/under-writing",
+  "buildCommand": "npx nx@21.1.2 build @right-credit/under-writing",
   "outputDirectory": "apps/under-writing/.next",
-  "installCommand": "npm install",
+  "installCommand": "npm ci",
   "framework": "nextjs"
 }
