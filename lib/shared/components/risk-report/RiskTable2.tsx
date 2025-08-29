@@ -125,7 +125,7 @@ const RiskTable = ({ data }: { data: LoanData[] }) => {
                   <Td py={3} borderBottom="1px solid #FAFAFA">
                     <Text fontSize="14px" fontWeight="400" color="bodyText.100">
                       {risk.personal_details?.first_name}{' '}
-                      {risk.personal_details?.sur_name}
+                      {risk.personal_details?.surname}
                     </Text>
                   </Td>
 

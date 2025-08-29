@@ -1,6 +1,25 @@
 import { Box, Text, HStack, VStack, SimpleGrid } from '@chakra-ui/react';
 
-const DemographicLocationAssessment = () => {
+interface PersonalDetails {
+  residential_details?: {
+    state?: string;
+    town?: string;
+    address?: string;
+  };
+}
+
+interface RiskAnalysis {
+  demographic_risk_score?: number;
+  personal_details?: PersonalDetails;
+}
+
+interface DemographicLocationAssessmentProps {
+  riskAnalysis: RiskAnalysis;
+}
+
+const DemographicLocationAssessment = ({ riskAnalysis }: DemographicLocationAssessmentProps) => {
+  const demographicScore = riskAnalysis?.demographic_risk_score || 0;
+  const residentialDetails = riskAnalysis?.personal_details?.residential_details;
   return (
     <VStack alignItems="center" justifyContent="center" h="100%" mt={8}>
       <Box
@@ -47,8 +66,9 @@ const DemographicLocationAssessment = () => {
                   fontWeight="600"
                   color="headText.100"
                   mt={1}
+                  textTransform="capitalize"
                 >
-                  Adamawa State
+                  {residentialDetails?.state || 'N/A'}
                 </Text>
               </VStack>
 
@@ -68,7 +88,7 @@ const DemographicLocationAssessment = () => {
                   color="headText.100"
                   mt={1}
                 >
-                  50
+                  {demographicScore || 'N/A'}
                 </Text>
               </VStack>
             </SimpleGrid>

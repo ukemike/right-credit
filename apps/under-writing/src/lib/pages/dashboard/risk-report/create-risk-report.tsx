@@ -23,7 +23,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import UploadCard from '@shared/components/customers/uploadCard';
-import DashboardLayout from '@shared/components/dashboard/layout/DashboardLayout';
+import DashboardLayout from '@/lib/components/layout/DashboardLayout';
 import Button from '@shared/components/ui/Button';
 import Input from '@shared/components/ui/Input';
 import Select from '@shared/components/ui/Select';
@@ -56,7 +56,38 @@ const CreateRiskReport = () => {
   };
 
   const handleSubmit = async (values: any) => {
-    await createRisk(values)
+    const formData = new FormData();
+
+
+    // {"loan_type": "business", "personal_details": {"title": "engineer cutting-edge deliverables", "first_name": "Gerson", "middle_name": "Medhurst", "surname": "Muller", "date_of_birth": "Sat Jan 25 2025 21:07:51 GMT+0000 (Coordinated Universal Time)", "bvn_number": "60-213-449-7997", "mobile_number": "r", "email_address": "Yasmeen_Anderson@hotmail.com", "gender": "male", "marital_status": "married", "no_of_dependant": 10, "highest_education_level": "college", "residential_details": {"address": "9263 Bechtelar Square", "state": "Cameroon", "town": "Leffler Mountain"}}, "employment_details": {"name_of_employer": "Regina Marks", "employment_type": "part_time", "industry": "finance", "employer_address": {"address": "17497 Glover Junctions", "state": "Montenegro", "town": "Torrance Mountains"}}, "business_details": {"name": "ana.info", "registration_number": "239-361-5395", "business_type": "corporation", "industry": "finance", "business_address": {"address": "2640 Bettye Haven", "state": "Cape Verde", "town": "Ronaldo Mountains"}}, "documents": {"bank_statement_password": "258-474-2814"}}
+
+    // {"loan_type":"payday","personal_details":{"title":"Ducimus deserunt ad","first_name":"Clare","middle_name":"Belle Floyd","sur_name":"Le","date_of_birth":"1975-05-17","bvn_number":"265","mobile_number":"372","email_address":"sucotytaxo@mailinator.com","gender":"female","marital_status":"married","no_of_dependant":8,"highest_education_level":"professor","residential_details":{"address":"Rerum voluptatum fug","state":"lagos","town":"ikeja"}},"employment_details":{"name_of_employer":"Michael Uke","employment_type":"contract","industry":"manufacturing","employer_address":{"address":"11 Ogunmade Street Off Lawal Oshogun","state":"adamawa","town":"girei"}},"business_details":null,"documents":{"bank_statement_password":""}}
+
+    // Stringify the entire data object as required by the API
+    const dataPayload = {
+      loan_type: values.loan_type,
+      personal_details: values.personal_details,
+      employment_details: values.employment_details,
+      business_details: values.business_details,
+      documents: {
+        bank_statement_password: '',
+      }
+    };
+
+    console.log(dataPayload, 'dataPayload');
+
+    // Add the stringified data as a single field
+    formData.append('data', JSON.stringify(dataPayload));
+    
+    // Add the bank statement file separately
+    formData.append('bank_statement', files.bank_statement as File);
+
+    // log form data as key value pairs
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
+    await createRisk(formData)
       .unwrap()
       .then(() => {
         toast({
@@ -148,7 +179,7 @@ const CreateRiskReport = () => {
                   title: '',
                   first_name: '',
                   middle_name: '',
-                  sur_name: '',
+                  surname: '',
                   date_of_birth: '',
                   bvn_number: '',
                   mobile_number: '',
@@ -183,7 +214,7 @@ const CreateRiskReport = () => {
                       title: values.title,
                       first_name: values.first_name,
                       middle_name: values.middle_name,
-                      sur_name: values.sur_name,
+                      surname: values.surname,
                       date_of_birth: values.date_of_birth,
                       bvn_number: values.bvn_number,
                       mobile_number: values.mobile_number,
@@ -225,9 +256,9 @@ const CreateRiskReport = () => {
                             },
                           }
                         : null,
-                    documents: {
-                      bank_statement: values.bank_statement,
-                    },
+                    // documents: {
+                    //   bank_statement: files.bank_statement,
+                    // },
                   };
                   handleSubmit(structuredData);
                 }}
@@ -347,7 +378,7 @@ const CreateRiskReport = () => {
 
                             <Input
                               label="Surname"
-                              name="sur_name"
+                              name="surname"
                               type="text"
                               placeholder="Enter surname"
                             />

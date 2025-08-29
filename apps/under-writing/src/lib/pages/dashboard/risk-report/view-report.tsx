@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, HStack, Text, IconButton, Image, VStack } from '@chakra-ui/react';
+import { Box, HStack, Text, IconButton, Image, VStack, Spinner, Center } from '@chakra-ui/react';
 import {
   Chart as ChartJS,
   ArcElement,
@@ -19,13 +19,12 @@ import BorrowerInformation from '@shared/components/risk-report/BorrowerInformat
 import CreditBehavior from '@shared/components/risk-report/CreditBehavior';
 import DebtBurdenAndIncomeAssessment from '@shared/components/risk-report/DebtBurdenAndIncomeAssessment';
 import DemographicLocationAssessment from '@shared/components/risk-report/DemographicLocationAssessment';
-import {
-  createGaugeConfig,
-  riskLabels,
-} from '@shared/components/risk-report/GaugeConfig';
 import RiskScoreGauges from '@shared/components/risk-report/RiskScoreGauges';
 import Button from '@shared/components/ui/Button';
 import { useGetRiskAnalysisByIdQuery } from '@shared/redux/services/risk.service';
+import { useMemo } from 'react';
+import { getRiskLevel, getRiskColor } from '@shared/utils/riskUtils';
+import { createGaugeConfig } from '@shared/components/risk-report/GaugeConfig';
 
 // Register chart.js components
 ChartJS.register(
@@ -37,70 +36,93 @@ ChartJS.register(
   BarElement
 );
 
-type RiskReport = {
-  dateCreated: string;
-  borrowerName: string;
-  borrowerType: string;
-  BVN: string;
-};
 
-const riskReportData: RiskReport[] = [
-  {
-    dateCreated: '2021-01-01',
-    borrowerName: 'John Doe',
-    borrowerType: 'Individual',
-    BVN: '1234567890',
-  },
-  {
-    dateCreated: '2021-01-01',
-    borrowerName: 'John Doe',
-    borrowerType: 'Individual',
-    BVN: '1234567890',
-  },
-  {
-    dateCreated: '2021-01-01',
-    borrowerName: 'John Doe',
-    borrowerType: 'Individual',
-    BVN: '1234567890',
-  },
-];
-
-const bankStatementData = [
-  {
-    SN: 1,
-    Inflow: 1000,
-    Outflow: 500,
-  },
-  {
-    SN: 2,
-    Inflow: 1000,
-    Outflow: 500,
-  },
-  {
-    SN: 3,
-    Inflow: 1000,
-    Outflow: 500,
-  },
-  {
-    SN: 4,
-    Inflow: 1000,
-    Outflow: 500,
-  },
-];
-
-// Risk score configurations
-const bankStatementConfig = createGaugeConfig(728, 1000, '#02CF6F');
-const debtBurdenConfig = createGaugeConfig(310, 1000, '#FF4F71');
-const affordabilityConfig = createGaugeConfig(930, 1000, '#00783F');
-const creditBureauConfig = createGaugeConfig(520, 1000, '#F2994A');
-const incomeAssessmentConfig = createGaugeConfig(160, 1000, '#C90B2F');
 
 const ViewRiskReport = () => {
   const router = useRouter();
   const { reportId } = useParams();
 
-  const { data: riskAnalysis } = useGetRiskAnalysisByIdQuery(reportId);
-  console.log(riskAnalysis, 'riskAnalysis');
+  const { data, isLoading } = useGetRiskAnalysisByIdQuery(reportId);
+  const riskAnalysis = useMemo(() => data || {}, [data]);
+
+  // Create dynamic risk score configurations based on actual data
+  const bankStatementScore = riskAnalysis?.bank_statement_risk_score || 0;
+  const debtBurdenScore = riskAnalysis?.debt_burden_score || 0;
+  const affordabilityScore = riskAnalysis?.affordability_risk_score || 0;
+  const creditBureauScore = riskAnalysis?.bureau_risk_score || 0;
+  const incomeAssessmentScore = riskAnalysis?.income_assessment_score || 0;
+  const demographicScore = riskAnalysis?.demographic_risk_score || 0;
+
+  const bankStatementConfig = createGaugeConfig(bankStatementScore, 1000, getRiskColor(bankStatementScore).color);
+  const debtBurdenConfig = createGaugeConfig(debtBurdenScore, 1000, getRiskColor(debtBurdenScore).color);
+  const affordabilityConfig = createGaugeConfig(affordabilityScore, 1000, getRiskColor(affordabilityScore).color);
+  const creditBureauConfig = createGaugeConfig(creditBureauScore, 1000, getRiskColor(creditBureauScore).color);
+  const incomeAssessmentConfig = createGaugeConfig(incomeAssessmentScore, 1000, getRiskColor(incomeAssessmentScore).color);
+
+  // Create dynamic risk labels
+  const dynamicRiskLabels = {
+    bankStatement: { score: bankStatementScore, label: getRiskLevel(bankStatementScore) },
+    debtBurden: { score: debtBurdenScore, label: getRiskLevel(debtBurdenScore) },
+    affordability: { score: affordabilityScore, label: getRiskLevel(affordabilityScore) },
+    creditBureau: { score: creditBureauScore, label: getRiskLevel(creditBureauScore) },
+    incomeAssessment: { score: incomeAssessmentScore, label: getRiskLevel(incomeAssessmentScore) },
+    location: { score: demographicScore, label: getRiskLevel(demographicScore) },
+  };
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <DashboardLayout showSidebar={false} bg="#F7F8FA" px="0">
+        <Box>
+          <HStack
+            justifyContent="space-between"
+            w="100%"
+            p={4}
+            flexDirection={['column', 'row']}
+            alignItems={['flex-start', 'center']}
+            bg="white"
+          >
+            <HStack alignItems="center" spacing={2}>
+              <IconButton
+                aria-label="Back"
+                icon={<Image src="/images/back.svg" alt="arrow-left" />}
+                onClick={() => router.back()}
+                size="sm"
+                variant="ghost"
+                _hover={{ bg: 'transparent' }}
+                m={0}
+                p={0}
+              />
+              <Text fontSize="md" fontWeight="700" color="bodyText.100">
+                Customer Underwriting report
+              </Text>
+            </HStack>
+
+            <HStack>
+              <Button text="Download Report" size="md" px={6} isDisabled />
+            </HStack>
+          </HStack>
+
+          <Center h="60vh" flexDirection="column">
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="blue.500"
+              size="xl"
+              mb={4}
+            />
+            <Text fontSize="lg" fontWeight="500" color="bodyText.200">
+              Loading risk analysis report...
+            </Text>
+            <Text fontSize="sm" color="bodyText.100" mt={2}>
+              Please wait while we fetch the data
+            </Text>
+          </Center>
+        </Box>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout showSidebar={false} bg="#F7F8FA" px="0">
@@ -135,7 +157,7 @@ const ViewRiskReport = () => {
         </HStack>
 
         {/* Borrower Information */}
-        <BorrowerInformation riskReportData={riskReportData} />
+        <BorrowerInformation riskAnalysis={riskAnalysis} />
 
         {/* Risk Score Gauges */}
         <RiskScoreGauges
@@ -144,7 +166,7 @@ const ViewRiskReport = () => {
           affordabilityConfig={affordabilityConfig}
           creditBureauConfig={creditBureauConfig}
           incomeAssessmentConfig={incomeAssessmentConfig}
-          riskLabels={riskLabels}
+          riskLabels={dynamicRiskLabels}
         />
 
         <VStack alignItems="center" justifyContent="center" h="100%" mt={8}>
@@ -162,19 +184,19 @@ const ViewRiskReport = () => {
         </VStack>
 
         {/* Bank Statement Analysis */}
-        <BankStatementAnalysis bankStatementData={bankStatementData} />
+        <BankStatementAnalysis riskAnalysis={riskAnalysis} />
 
         {/* Debt Burden And Income Assessment */}
-        <DebtBurdenAndIncomeAssessment />
+        <DebtBurdenAndIncomeAssessment riskAnalysis={riskAnalysis} />
 
         {/* Credit Behavior */}
-        <CreditBehavior />
+        <CreditBehavior riskAnalysis={riskAnalysis} />
 
         {/* Affordability Assessment */}
-        <AffordabilityAssessment />
+        <AffordabilityAssessment riskAnalysis={riskAnalysis} />
 
         {/* Demographic Location Assessment */}
-        <DemographicLocationAssessment />
+        <DemographicLocationAssessment riskAnalysis={riskAnalysis} />
       </Box>
     </DashboardLayout>
   );

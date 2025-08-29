@@ -22,7 +22,7 @@ export type PersonalDetails = {
   mobile_number: string;
   no_of_dependant: number;
   residential_details: ResidentialDetails;
-  sur_name: string;
+  surname: string;
   title: string;
 };
 

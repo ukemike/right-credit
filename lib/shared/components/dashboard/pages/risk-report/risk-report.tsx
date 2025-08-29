@@ -29,10 +29,11 @@ import { useMemo, useState } from 'react';
 
 import RiskTable from '../../../risk-report/RiskTable';
 import RiskTable2 from '../../../risk-report/RiskTable2';
+import RiskTable3 from '../../../risk-report/RiskTable3';
 import Button from '../../../ui/Button';
 import { useListRisksByStateQuery } from '@shared/redux/services/risk.service';
 
-type Status = 'in_progress' | 'completed';
+type Status = 'pending' | 'completed' | 'failed';
 
 const TableSkeletonLoader = () => (
   <TableContainer bg="white">
@@ -92,7 +93,7 @@ const TableSkeletonLoader = () => (
 const RiskReportComponent = () => {
   const router = useRouter();
 
-  const [status, setStatus] = useState<Status>('in_progress');
+  const [status, setStatus] = useState<Status>('pending');
 
   const {
     data: risks,
@@ -116,12 +117,17 @@ const RiskReportComponent = () => {
     {
       header: `Pending Request (${requests?.length})`,
       component: <RiskTable data={requests} />,
-      status: 'in_progress',
+      status: 'pending',
     },
     {
       header: 'Completed',
       component: <RiskTable2 data={requests} />,
       status: 'completed',
+    },
+    {
+      header: 'Failed',
+      component: <RiskTable3 data={requests} />,
+      status: 'failed',
     },
   ];
 

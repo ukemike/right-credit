@@ -16,22 +16,160 @@ import {
 import { Bar } from 'react-chartjs-2';
 
 import { formatCurrency } from '@shared/utils/formatter';
+import {
+  getRiskLevel,
+  getRiskColor,
+  formatScore,
+} from '@shared/utils/riskUtils';
 
-import { barChartConfig } from './ChartConfig';
+interface MonthlyData {
+  amount: number;
+  month_name: string;
+  year: string;
+}
 
-type BankStatementData = {
-  SN: number;
-  Inflow: number;
-  Outflow: number;
-}[];
+interface BankStatementReport {
+  monthly_inflow?: MonthlyData[];
+  monthly_outflow?: MonthlyData[];
+  gambling_status?: string;
+  account_sweep?: string;
+  inflow_outflow_rate?: number;
+  overall_inflow_outflow_rate?: number;
+  percentage_of_inflow_irregularity?: number;
+  percentage_debit_transactions?: number;
+  percentage_credit_transactions?: number;
+  percentage_transactions_less_than_10k?: number;
+  percentage_days_with_low_transaction_amount?: number;
+  percentage_less_than_10k?: number;
+  most_frequent_balance_range?: string;
+  most_frequent_transaction_range?: string;
+  missing_transactions?: string;
+  no_of_self_transfer_inflows?: number;
+  no_of_self_transfer_outflows?: number;
+  no_transacting_months?: number;
+}
+
+interface RiskAnalysis {
+  bank_statement_risk_score?: number;
+  bank_statement_report?: BankStatementReport;
+}
 
 interface BankStatementAnalysisProps {
-  bankStatementData: BankStatementData;
+  riskAnalysis: RiskAnalysis;
 }
 
 const BankStatementAnalysis = ({
-  bankStatementData,
+  riskAnalysis,
 }: BankStatementAnalysisProps) => {
+  const bankStatementScore = riskAnalysis?.bank_statement_risk_score || 0;
+  const bankStatementData = riskAnalysis?.bank_statement_report;
+  const riskLevel = getRiskLevel(bankStatementScore);
+  const riskColors = getRiskColor(bankStatementScore);
+
+  // Transform monthly data for table display
+  const monthlyInflowData = bankStatementData?.monthly_inflow || [];
+  const monthlyOutflowData = bankStatementData?.monthly_outflow || [];
+
+  const transformedBankStatementData = monthlyInflowData.map(
+    (inflow, index) => ({
+      SN: index + 1,
+      Inflow: inflow.amount,
+      Outflow: monthlyOutflowData[index]?.amount || 0,
+    })
+  );
+
+  // Calculate totals
+  const totalInflow = monthlyInflowData.reduce(
+    (sum, item) => sum + item.amount,
+    0
+  );
+  const totalOutflow = monthlyOutflowData.reduce(
+    (sum, item) => sum + item.amount,
+    0
+  );
+
+  // Create chart configuration with real data
+  const chartLabels = monthlyInflowData.map(
+    (item) => `${item.month_name} ${item.year}`
+  );
+  const inflowData = monthlyInflowData.map((item) => item.amount);
+  const outflowData = monthlyOutflowData.map((item) => item.amount);
+
+  const dynamicBarChartConfig = {
+    data: {
+      labels: chartLabels,
+      datasets: [
+        {
+          label: 'Inflow',
+          data: inflowData,
+          backgroundColor: '#344BFD',
+          borderRadius: 4,
+          borderSkipped: false,
+          barPercentage: 0.5,
+          categoryPercentage: 0.7,
+        },
+        {
+          label: 'Outflow',
+          data: outflowData,
+          backgroundColor: '#FF955A',
+          borderRadius: 4,
+          borderSkipped: false,
+          barPercentage: 0.5,
+          categoryPercentage: 0.7,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        tooltip: {
+          callbacks: {
+            label(context: any) {
+              return `${
+                context.dataset.label
+              }: ₦${context.raw.toLocaleString()}`;
+            },
+          },
+        },
+      },
+      scales: {
+        x: {
+          grid: {
+            display: false,
+            drawBorder: false,
+          },
+          ticks: {
+            font: {
+              size: 11,
+            },
+            color: '#767676',
+          },
+        },
+        y: {
+          grid: {
+            color: '#E5E7EB',
+            drawBorder: false,
+          },
+          ticks: {
+            font: {
+              size: 11,
+            },
+            color: '#767676',
+            callback(value: any) {
+              if (value >= 1000000) return `₦${(value / 1000000).toFixed(1)}m`;
+              if (value >= 1000) return `₦${(value / 1000).toFixed(1)}k`;
+              return `₦${value}`;
+            },
+          },
+          beginAtZero: true,
+        },
+      },
+    },
+  };
   return (
     <VStack alignItems="center" justifyContent="center" h="100%" mt={8}>
       <Box
@@ -75,8 +213,8 @@ const BankStatementAnalysis = ({
                 Bank Statement Risk Score
               </Badge>
               <Badge
-                bg="#02CF6F1A"
-                color="#02CF6F"
+                bg={riskColors.bg}
+                color={riskColors.color}
                 fontSize="sm"
                 fontWeight="700"
                 borderRadius="4px"
@@ -85,11 +223,11 @@ const BankStatementAnalysis = ({
                 py={1}
                 rounded="full"
               >
-                800/1000
+                {formatScore(bankStatementScore)}
               </Badge>
               <Badge
-                bg="#02CF6F1A"
-                color="#02CF6F"
+                bg={riskColors.bg}
+                color={riskColors.color}
                 fontSize="sm"
                 fontWeight="700"
                 borderRadius="4px"
@@ -98,7 +236,7 @@ const BankStatementAnalysis = ({
                 py={1}
                 rounded="full"
               >
-                Low Risk
+                {riskLevel}
               </Badge>
             </HStack>
 
@@ -125,7 +263,8 @@ const BankStatementAnalysis = ({
                     fontWeight="700"
                     color="#2E2E30"
                   >
-                    Month on Month Overview ( Jan 2024 - Jan 2025)
+                    {/* Month on Month Overview ( Jan 2024 - Jan 2025) */}
+                    Month on Month Overview ({monthlyInflowData[0]?.month_name} {monthlyInflowData[0]?.year} - {monthlyInflowData[monthlyInflowData.length - 1]?.month_name} {monthlyInflowData[monthlyInflowData.length - 1]?.year})
                   </Text>
 
                   <HStack spacing={4} w="100%">
@@ -139,7 +278,7 @@ const BankStatementAnalysis = ({
                           fontWeight="700"
                           color="bodyText.100"
                         >
-                          18,883,902
+                          {totalInflow.toLocaleString()}
                         </Text>
                       </Text>
                     </HStack>
@@ -154,7 +293,7 @@ const BankStatementAnalysis = ({
                           fontWeight="700"
                           color="bodyText.100"
                         >
-                          18,883,902
+                          {totalOutflow.toLocaleString()}
                         </Text>
                       </Text>
                     </HStack>
@@ -199,7 +338,7 @@ const BankStatementAnalysis = ({
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {bankStatementData.map((report, index) => (
+                    {transformedBankStatementData.map((report, index) => (
                       <Tr
                         key={index}
                         _hover={{
@@ -260,8 +399,8 @@ const BankStatementAnalysis = ({
                 >
                   <Box w="100%" h="300px" position="relative">
                     <Bar
-                      data={barChartConfig.data}
-                      options={barChartConfig.options}
+                      data={dynamicBarChartConfig.data}
+                      options={dynamicBarChartConfig.options}
                     />
                   </Box>
                 </Box>
@@ -306,7 +445,7 @@ const BankStatementAnalysis = ({
                           fontWeight="700"
                           color="bodyText.100"
                         >
-                          18,883,902
+{totalInflow.toLocaleString()}
                         </Text>
                       </Text>
                     </HStack>
@@ -321,7 +460,7 @@ const BankStatementAnalysis = ({
                           fontWeight="700"
                           color="bodyText.100"
                         >
-                          18,883,902
+{totalInflow.toLocaleString()}
                         </Text>
                       </Text>
                     </HStack>
@@ -366,7 +505,7 @@ const BankStatementAnalysis = ({
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {bankStatementData.map((report, index) => (
+                    {transformedBankStatementData.map((report, index) => (
                       <Tr
                         key={index}
                         _hover={{
@@ -456,8 +595,8 @@ const BankStatementAnalysis = ({
                 <Text fontSize="sm" fontWeight="400" color="bodyText.200">
                   Gambling status:
                 </Text>
-                <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                  No Gambling Transactions Found
+                <Text fontSize="14px" fontWeight="600" color="bodyText.600" textTransform="capitalize">
+                  {bankStatementData?.gambling_status || 'N/A'}
                 </Text>
               </HStack>
 
@@ -470,8 +609,8 @@ const BankStatementAnalysis = ({
                 <Text fontSize="sm" fontWeight="400" color="bodyText.200">
                   Account sweep:
                 </Text>
-                <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                  Yes
+                <Text fontSize="14px" fontWeight="600" color="bodyText.600" textTransform="capitalize">
+                  {bankStatementData?.account_sweep || 'N/A'}
                 </Text>
               </HStack>
 
@@ -485,7 +624,7 @@ const BankStatementAnalysis = ({
                   Inflow outflow rate (month_on_month):
                 </Text>
                 <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                  70%
+                  {bankStatementData?.inflow_outflow_rate ? `${(bankStatementData.inflow_outflow_rate * 100).toFixed(1)}%` : 'N/A'}
                 </Text>
               </HStack>
 
@@ -499,7 +638,7 @@ const BankStatementAnalysis = ({
                   Overall inflow outflow:
                 </Text>
                 <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                  100,000
+                  {bankStatementData?.overall_inflow_outflow_rate ? `${(bankStatementData.overall_inflow_outflow_rate * 100).toFixed(1)}%` : 'N/A'}
                 </Text>
               </HStack>
 
@@ -513,7 +652,7 @@ const BankStatementAnalysis = ({
                   Percentage of inflow irregularity:
                 </Text>
                 <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                  12%
+                  {bankStatementData?.percentage_of_inflow_irregularity ? `${bankStatementData.percentage_of_inflow_irregularity}%` : 'N/A'}
                 </Text>
               </HStack>
 
@@ -527,7 +666,7 @@ const BankStatementAnalysis = ({
                   % debit transactions:
                 </Text>
                 <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                  70%
+                  {bankStatementData?.percentage_debit_transactions ? `${bankStatementData.percentage_debit_transactions}%` : 'N/A'}
                 </Text>
               </HStack>
 
@@ -541,7 +680,7 @@ const BankStatementAnalysis = ({
                   % credit transactions:
                 </Text>
                 <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                  100%
+                  {bankStatementData?.percentage_credit_transactions ? `${bankStatementData.percentage_credit_transactions}%` : 'N/A'}
                 </Text>
               </HStack>
 
@@ -555,7 +694,7 @@ const BankStatementAnalysis = ({
                   % transactions less than 10k:
                 </Text>
                 <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                  30%
+                  {bankStatementData?.percentage_transactions_less_than_10k ? `${bankStatementData.percentage_transactions_less_than_10k}%` : 'N/A'}
                 </Text>
               </HStack>
 
@@ -569,7 +708,7 @@ const BankStatementAnalysis = ({
                   % days with low transaction amount(10k):
                 </Text>
                 <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                  80%
+                  {bankStatementData?.percentage_days_with_low_transaction_amount ? `${bankStatementData.percentage_days_with_low_transaction_amount}%` : 'N/A'}
                 </Text>
               </HStack>
             </VStack>
@@ -585,7 +724,7 @@ const BankStatementAnalysis = ({
                   % balance less than 10k:
                 </Text>
                 <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                  21%
+                  {bankStatementData?.percentage_less_than_10k ? `${bankStatementData.percentage_less_than_10k}%` : 'N/A'}
                 </Text>
               </HStack>
 
@@ -599,7 +738,7 @@ const BankStatementAnalysis = ({
                   Most frequent balance range:
                 </Text>
                 <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                  1,390,000 - 1,343,990
+                  {bankStatementData?.most_frequent_balance_range || 'N/A'}
                 </Text>
               </HStack>
 
@@ -613,7 +752,7 @@ const BankStatementAnalysis = ({
                   Most frequent transaction range:
                 </Text>
                 <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                  90,000 - 100,000
+                  {bankStatementData?.most_frequent_transaction_range || 'N/A'}
                 </Text>
               </HStack>
 
@@ -627,7 +766,7 @@ const BankStatementAnalysis = ({
                   Missing transactions:
                 </Text>
                 <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                  390,000
+                  {bankStatementData?.missing_transactions || 'N/A'}
                 </Text>
               </HStack>
 
@@ -641,7 +780,7 @@ const BankStatementAnalysis = ({
                   No of self transfer inflows:
                 </Text>
                 <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                  83
+                  {bankStatementData?.no_of_self_transfer_inflows || 'N/A'}
                 </Text>
               </HStack>
 
@@ -655,7 +794,7 @@ const BankStatementAnalysis = ({
                   No of self transfer outflows:
                 </Text>
                 <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                  231
+                  {bankStatementData?.no_of_self_transfer_outflows || 'N/A'}
                 </Text>
               </HStack>
 
@@ -669,7 +808,7 @@ const BankStatementAnalysis = ({
                   No transacting months:
                 </Text>
                 <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                  34
+                  {bankStatementData?.no_transacting_months || 'N/A'}
                 </Text>
               </HStack>
 
@@ -683,7 +822,7 @@ const BankStatementAnalysis = ({
                   How many months is the statement submitted:
                 </Text>
                 <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                  32
+                  {monthlyInflowData.length || 'N/A'}
                 </Text>
               </HStack>
             </VStack>

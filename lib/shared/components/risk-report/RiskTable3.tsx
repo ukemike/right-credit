@@ -17,7 +17,7 @@ import EmptyState from '../EmptyState';
 import { formatDate } from '@shared/utils/formatter';
 import type { LoanData } from '@shared/utils/types';
 
-const RiskTable = ({ data }: { data: LoanData[] }) => {
+const RiskTable3 = ({ data }: { data: LoanData[] }) => {
   const router = useRouter();
 
   const handleRowClick = (jobId: string) => {
@@ -29,10 +29,12 @@ const RiskTable = ({ data }: { data: LoanData[] }) => {
       {data?.length === 0 ? (
         <Box bg="#FAFBFF">
           <EmptyState
-            title="No report created yet"
-            description="New reports created will be visible on this page"
+            title="No failed reports"
+            description="Reports that failed processing will be visible on this page"
             btnText="Create New Report"
-            onClick={() => router.push('/dashboard/risk-report/create-risk-report')}
+            onClick={() =>
+              router.push('/dashboard/risk-report/create-risk-report')
+            }
           />
         </Box>
       ) : (
@@ -130,17 +132,12 @@ const RiskTable = ({ data }: { data: LoanData[] }) => {
                       {formatDate(risk.created_at)}
                     </Text>
                   </Td>
+
                   <Td py={3} borderBottom="1px solid #FAFAFA">
                     <Badge
-                      bg={
-                        risk.state === 'in_progress' ? '#FFBB011C' : '#0080001C'
-                      }
-                      color={
-                        risk.state === 'in_progress' ? '#FFBB00' : '#008000'
-                      }
-                      borderColor={
-                        risk.state === 'in_progress' ? '#FFBB00' : '#008000'
-                      }
+                      bg="#FF00001C"
+                      color="#FF0000"
+                      borderColor="#FF0000"
                       borderWidth={1}
                       fontSize="sm"
                       textTransform="capitalize"
@@ -149,9 +146,7 @@ const RiskTable = ({ data }: { data: LoanData[] }) => {
                       px={3}
                       py={1}
                     >
-                      {risk.state === 'in_progress'
-                        ? 'In Progress'
-                        : 'Completed'}
+                      Failed
                     </Badge>
                   </Td>
                 </Tr>
@@ -164,4 +159,4 @@ const RiskTable = ({ data }: { data: LoanData[] }) => {
   );
 };
 
-export default RiskTable;
+export default RiskTable3;

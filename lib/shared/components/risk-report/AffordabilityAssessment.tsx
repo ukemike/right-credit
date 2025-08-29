@@ -1,6 +1,20 @@
 import { Box, Text, HStack, VStack, Badge, SimpleGrid } from '@chakra-ui/react';
+import { getRiskLevel, getRiskColor, formatScore, formatCurrencyFromNumber } from '@shared/utils/riskUtils';
 
-const AffordabilityAssessment = () => {
+interface RiskAnalysis {
+  affordability_risk_score?: number;
+  disposable_income?: number;
+  disposable_income_status?: string;
+}
+
+interface AffordabilityAssessmentProps {
+  riskAnalysis: RiskAnalysis;
+}
+
+const AffordabilityAssessment = ({ riskAnalysis }: AffordabilityAssessmentProps) => {
+  const affordabilityScore = riskAnalysis?.affordability_risk_score || 0;
+  const riskLevel = getRiskLevel(affordabilityScore);
+  const riskColors = getRiskColor(affordabilityScore);
   return (
     <VStack alignItems="center" justifyContent="center" h="100%" mt={8}>
       <Box
@@ -44,8 +58,8 @@ const AffordabilityAssessment = () => {
                 Affordability Score
               </Badge>
               <Badge
-                bg="#02CF6F1A"
-                color="#02CF6F"
+                bg={riskColors.bg}
+                color={riskColors.color}
                 fontSize="sm"
                 fontWeight="700"
                 borderRadius="4px"
@@ -54,11 +68,11 @@ const AffordabilityAssessment = () => {
                 py={1}
                 rounded="full"
               >
-                728
+                {formatScore(affordabilityScore)}
               </Badge>
               <Badge
-                bg="#02CF6F1A"
-                color="#02CF6F"
+                bg={riskColors.bg}
+                color={riskColors.color}
                 fontSize="sm"
                 fontWeight="700"
                 borderRadius="4px"
@@ -67,7 +81,7 @@ const AffordabilityAssessment = () => {
                 py={1}
                 rounded="full"
               >
-                Low Risk
+                {riskLevel}
               </Badge>
             </HStack>
 
@@ -88,7 +102,7 @@ const AffordabilityAssessment = () => {
                   color="headText.100"
                   mt={1}
                 >
-                  12,902,000
+                  {riskAnalysis?.disposable_income ? formatCurrencyFromNumber(riskAnalysis.disposable_income) : 'N/A'}
                 </Text>
               </VStack>
 
@@ -108,7 +122,7 @@ const AffordabilityAssessment = () => {
                   color="headText.100"
                   mt={1}
                 >
-                  Positive
+                  {riskAnalysis?.disposable_income_status || 'N/A'}
                 </Text>
               </VStack>
             </SimpleGrid>

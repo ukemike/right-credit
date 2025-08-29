@@ -5,7 +5,7 @@ export const riskSchema = Yup.object().shape({
   title: Yup.string().required('Title is required'),
   first_name: Yup.string().required('First name is required'),
   middle_name: Yup.string().required('Middle name is required'),
-  sur_name: Yup.string().required('Surname is required'),
+  surname: Yup.string().required('Surname is required'),
   date_of_birth: Yup.string().required('Date of birth is required'),
   bvn_number: Yup.string().required('BVN number is required'),
   mobile_number: Yup.string().required('Mobile number is required'),

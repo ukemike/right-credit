@@ -45,7 +45,7 @@ export const riskApi = createApi({
 
     getRiskAnalysisById: builder.query({
       query: (id) => ({
-        url: `risk_analysis/get_analysis/${id}`,
+        url: `risk_analysis/get_analysis/mock/${id}`,
         method: 'GET',
       }),
       providesTags: ['Risk'],

@@ -1,6 +1,52 @@
 import { Box, Text, HStack, VStack, Badge, SimpleGrid } from '@chakra-ui/react';
+import {
+  getRiskLevel,
+  getRiskColor,
+  formatScore,
+  formatCurrencyFromNumber,
+} from '@shared/utils/riskUtils';
 
-const CreditBehavior = () => {
+interface LoanHistory {
+  accountNumber?: string;
+  loanProvider?: string;
+  loanStatus?: string;
+  disbursedDate?: string;
+  maturityDate?: string;
+  loanAmount?: string;
+  outstandingBalance?: string;
+  installmentAmount?: string;
+  currency?: string;
+  numberOfOverdueDays?: number;
+  overdueAmount?: string;
+  loanDuration?: string;
+  lastPaymentDate?: string;
+}
+
+interface CreditHistory {
+  loan_history?: LoanHistory[];
+  days_in_arrears?: number;
+  average_loan_duration?: number;
+  loan_tenure_adjustment_score?: number;
+  total_number_of_loans?: number;
+  total_number_of_open_loans?: number;
+  total_amount_of_open_loans?: number;
+}
+
+interface RiskAnalysis {
+  bureau_risk_score?: number;
+  credit_history?: CreditHistory;
+}
+
+interface CreditBehaviorProps {
+  riskAnalysis: RiskAnalysis;
+}
+
+const CreditBehavior = ({ riskAnalysis }: CreditBehaviorProps) => {
+  const bureauScore = riskAnalysis?.bureau_risk_score || 0;
+  const creditHistory = riskAnalysis?.credit_history;
+  const riskLevel = getRiskLevel(bureauScore);
+  const riskColors = getRiskColor(bureauScore);
+  const loanHistory = creditHistory?.loan_history || [];
   return (
     <VStack alignItems="center" justifyContent="center" h="100%" mt={8}>
       <Box
@@ -44,8 +90,8 @@ const CreditBehavior = () => {
                 Credit Bureau Risk Score
               </Badge>
               <Badge
-                bg="#02CF6F1A"
-                color="#02CF6F"
+                bg={riskColors.bg}
+                color={riskColors.color}
                 fontSize="sm"
                 fontWeight="700"
                 borderRadius="4px"
@@ -54,11 +100,11 @@ const CreditBehavior = () => {
                 py={1}
                 rounded="full"
               >
-                800/1000
+                {formatScore(bureauScore)}
               </Badge>
               <Badge
-                bg="#02CF6F1A"
-                color="#02CF6F"
+                bg={riskColors.bg}
+                color={riskColors.color}
                 fontSize="sm"
                 fontWeight="700"
                 borderRadius="4px"
@@ -67,7 +113,7 @@ const CreditBehavior = () => {
                 py={1}
                 rounded="full"
               >
-                Low Risk
+                {riskLevel}
               </Badge>
             </HStack>
 
@@ -88,7 +134,7 @@ const CreditBehavior = () => {
                   color="headText.100"
                   mt={1}
                 >
-                  30%
+                  3??
                 </Text>
               </VStack>
 
@@ -108,7 +154,7 @@ const CreditBehavior = () => {
                   color="headText.100"
                   mt={1}
                 >
-                  0.67
+                  1??
                 </Text>
               </VStack>
 
@@ -128,7 +174,9 @@ const CreditBehavior = () => {
                   color="headText.100"
                   mt={1}
                 >
-                  ₦ 590,000
+                  {formatCurrencyFromNumber(
+                    creditHistory?.total_amount_of_open_loans || 0
+                  )}
                 </Text>
               </VStack>
 
@@ -148,7 +196,7 @@ const CreditBehavior = () => {
                   color="headText.100"
                   mt={1}
                 >
-                  983 Days
+                  {`${creditHistory?.days_in_arrears || 0} Days`}
                 </Text>
               </VStack>
             </SimpleGrid>
@@ -170,7 +218,7 @@ const CreditBehavior = () => {
                   color="headText.100"
                   mt={1}
                 >
-                  Last for the last 12 months
+                  {`${creditHistory?.total_number_of_loans || 0} loans`}
                 </Text>
               </VStack>
 
@@ -190,7 +238,7 @@ const CreditBehavior = () => {
                   color="headText.100"
                   mt={1}
                 >
-                  8 months
+                  {`${creditHistory?.average_loan_duration || 0} months`}
                 </Text>
               </VStack>
 
@@ -210,7 +258,7 @@ const CreditBehavior = () => {
                   color="headText.100"
                   mt={1}
                 >
-                  493
+                  {creditHistory?.loan_tenure_adjustment_score || 'N/A'}
                 </Text>
               </VStack>
             </SimpleGrid>
@@ -225,486 +273,282 @@ const CreditBehavior = () => {
           mt={8}
         >
           <Text fontSize="md" fontWeight="600" color="black" mb={4}>
-            List of all loans: (2)
+            List of all loans: ({loanHistory.length})
           </Text>
           <Box>
-            {/* Lender 1 - Zenith Bank */}
-            <Box
-              borderRadius="8px"
-              border="1px solid #E5E7EB"
-              w="100%"
-              p={4}
-              mb={4}
-            >
-              <Text fontSize="sm" fontWeight="400" color="bodyText.200" mb={2}>
-                Lender(1)
-              </Text>
-              <Text fontSize="md" fontWeight="600" color="bodyText.100" mb={4}>
-                Zenith bank
-              </Text>
-
-              <SimpleGrid columns={[1, 2]} spacing={4}>
-                <HStack
-                  justifyContent="space-between"
+            {loanHistory.length > 0 ? (
+              loanHistory.map((loan, index) => (
+                <Box
+                  key={index}
+                  borderRadius="8px"
+                  border="1px solid #E5E7EB"
                   w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
+                  p={4}
+                  mb={4}
                 >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    ACCOUNT NUMBER
+                  <Text
+                    fontSize="sm"
+                    fontWeight="400"
+                    color="bodyText.200"
+                    mb={2}
+                  >
+                    Lender({index + 1})
                   </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    0093828347
+                  <Text
+                    fontSize="md"
+                    fontWeight="600"
+                    color="bodyText.100"
+                    mb={4}
+                  >
+                    {loan?.loanProvider || 'N/A'}
                   </Text>
-                </HStack>
 
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    ACCOUNT STATUS
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    Default
-                  </Text>
-                </HStack>
+                  <SimpleGrid columns={[1, 2]} spacing={4}>
+                    <HStack
+                      justifyContent="space-between"
+                      w="100%"
+                      borderBottom="1px solid #E5E7EB"
+                      pb="2"
+                    >
+                      <Text fontSize="sm" fontWeight="400" color="bodyText.200">
+                        ACCOUNT NUMBER
+                      </Text>
+                      <Text
+                        fontSize="14px"
+                        fontWeight="600"
+                        color="bodyText.600"
+                      >
+                        {loan?.accountNumber || 'N/A'}
+                      </Text>
+                    </HStack>
 
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    ACCOUNT STATUS DATE
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    12th March 2025
-                  </Text>
-                </HStack>
+                    <HStack
+                      justifyContent="space-between"
+                      w="100%"
+                      borderBottom="1px solid #E5E7EB"
+                      pb="2"
+                    >
+                      <Text fontSize="sm" fontWeight="400" color="bodyText.200">
+                        ACCOUNT STATUS
+                      </Text>
+                      <Text
+                        fontSize="14px"
+                        fontWeight="600"
+                        color="bodyText.600"
+                      >
+                        {loan?.loanStatus || 'N/A'}
+                      </Text>
+                    </HStack>
 
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    LOAN EFFECTIVE DATE
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    10th Dec 2023
-                  </Text>
-                </HStack>
+                    <HStack
+                      justifyContent="space-between"
+                      w="100%"
+                      borderBottom="1px solid #E5E7EB"
+                      pb="2"
+                    >
+                      <Text fontSize="sm" fontWeight="400" color="bodyText.200">
+                        LOAN EFFECTIVE DATE
+                      </Text>
+                      <Text
+                        fontSize="14px"
+                        fontWeight="600"
+                        color="bodyText.600"
+                      >
+                        {loan?.disbursedDate || 'N/A'}
+                      </Text>
+                    </HStack>
 
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    CREDIT LIMIT
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    500,000
-                  </Text>
-                </HStack>
+                    <HStack
+                      justifyContent="space-between"
+                      w="100%"
+                      borderBottom="1px solid #E5E7EB"
+                      pb="2"
+                    >
+                      <Text fontSize="sm" fontWeight="400" color="bodyText.200">
+                        LOAN AMOUNT
+                      </Text>
+                      <Text
+                        fontSize="14px"
+                        fontWeight="600"
+                        color="bodyText.600"
+                      >
+                        {loan?.loanAmount
+                          ? formatCurrencyFromNumber(Number(loan.loanAmount))
+                          : 'N/A'}
+                      </Text>
+                    </HStack>
 
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    AVAILED LIMIT
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    1,390,000
-                  </Text>
-                </HStack>
+                    <HStack
+                      justifyContent="space-between"
+                      w="100%"
+                      borderBottom="1px solid #E5E7EB"
+                      pb="2"
+                    >
+                      <Text fontSize="sm" fontWeight="400" color="bodyText.200">
+                        OUTSTANDING BALANCE
+                      </Text>
+                      <Text
+                        fontSize="14px"
+                        fontWeight="600"
+                        color="bodyText.600"
+                      >
+                        {loan?.outstandingBalance
+                          ? formatCurrencyFromNumber(
+                              Number(loan.outstandingBalance)
+                            )
+                          : 'N/A'}
+                      </Text>
+                    </HStack>
 
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    OUTSTANDING BALANCE
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    100,000
-                  </Text>
-                </HStack>
+                    <HStack
+                      justifyContent="space-between"
+                      w="100%"
+                      borderBottom="1px solid #E5E7EB"
+                      pb="2"
+                    >
+                      <Text fontSize="sm" fontWeight="400" color="bodyText.200">
+                        INSTALMENT AMOUNT
+                      </Text>
+                      <Text
+                        fontSize="14px"
+                        fontWeight="600"
+                        color="bodyText.600"
+                      >
+                        {loan?.installmentAmount
+                          ? formatCurrencyFromNumber(
+                              Number(loan.installmentAmount)
+                            )
+                          : 'N/A'}
+                      </Text>
+                    </HStack>
 
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    INSTALMENT AMOUNT
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    390,000
-                  </Text>
-                </HStack>
+                    <HStack
+                      justifyContent="space-between"
+                      w="100%"
+                      borderBottom="1px solid #E5E7EB"
+                      pb="2"
+                    >
+                      <Text fontSize="sm" fontWeight="400" color="bodyText.200">
+                        CURRENCY
+                      </Text>
+                      <Text
+                        fontSize="14px"
+                        fontWeight="600"
+                        color="bodyText.600"
+                      >
+                        {loan?.currency || 'N/A'}
+                      </Text>
+                    </HStack>
 
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    CURRENCY
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    NGN
-                  </Text>
-                </HStack>
+                    <HStack
+                      justifyContent="space-between"
+                      w="100%"
+                      borderBottom="1px solid #E5E7EB"
+                      pb="2"
+                    >
+                      <Text fontSize="sm" fontWeight="400" color="bodyText.200">
+                        DAYS IN ARREARS
+                      </Text>
+                      <Text
+                        fontSize="14px"
+                        fontWeight="600"
+                        color="bodyText.600"
+                      >
+                        {loan?.numberOfOverdueDays || 0}
+                      </Text>
+                    </HStack>
 
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    DAYS IN ARREARS
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    83
-                  </Text>
-                </HStack>
+                    <HStack
+                      justifyContent="space-between"
+                      w="100%"
+                      borderBottom="1px solid #E5E7EB"
+                      pb="2"
+                    >
+                      <Text fontSize="sm" fontWeight="400" color="bodyText.200">
+                        OVER DUE AMOUNT
+                      </Text>
+                      <Text
+                        fontSize="14px"
+                        fontWeight="600"
+                        color="bodyText.600"
+                      >
+                        {loan?.overdueAmount
+                          ? formatCurrencyFromNumber(Number(loan.overdueAmount))
+                          : 'N/A'}
+                      </Text>
+                    </HStack>
 
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    OVER DUE AMOUNT
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    390,000
-                  </Text>
-                </HStack>
+                    <HStack
+                      justifyContent="space-between"
+                      w="100%"
+                      borderBottom="1px solid #E5E7EB"
+                      pb="2"
+                    >
+                      <Text fontSize="sm" fontWeight="400" color="bodyText.200">
+                        FACILITY TENOR
+                      </Text>
+                      <Text
+                        fontSize="14px"
+                        fontWeight="600"
+                        color="bodyText.600"
+                      >
+                        {loan?.loanDuration
+                          ? `${loan.loanDuration} months`
+                          : 'N/A'}
+                      </Text>
+                    </HStack>
 
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    FACILITY TENOR
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    24 months
-                  </Text>
-                </HStack>
+                    <HStack
+                      justifyContent="space-between"
+                      w="100%"
+                      borderBottom="1px solid #E5E7EB"
+                      pb="2"
+                    >
+                      <Text fontSize="sm" fontWeight="400" color="bodyText.200">
+                        LAST PAYMENT DATE
+                      </Text>
+                      <Text
+                        fontSize="14px"
+                        fontWeight="600"
+                        color="bodyText.600"
+                      >
+                        {loan?.lastPaymentDate || 'N/A'}
+                      </Text>
+                    </HStack>
 
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    REPAYMENT FREQUENCY
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    12
-                  </Text>
-                </HStack>
-
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    LAST PAYMENT DATE
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    10th Dec 2024
-                  </Text>
-                </HStack>
-
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    LAST PAYMENT AMOUNT:
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    90,000
-                  </Text>
-                </HStack>
-
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    MATURITY DATE
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    12th Dec 2026
-                  </Text>
-                </HStack>
-              </SimpleGrid>
-            </Box>
-
-            {/* Lender 2 - United Bank for Africa */}
-            <Box borderRadius="8px" border="1px solid #E5E7EB" w="100%" p={4}>
-              <Text fontSize="sm" fontWeight="400" color="bodyText.200" mb={2}>
-                Lender(2)
-              </Text>
-              <Text fontSize="md" fontWeight="600" color="bodyText.100" mb={4}>
-                United bank for Africa
-              </Text>
-
-              <SimpleGrid columns={[1, 2]} spacing={4}>
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    ACCOUNT NUMBER
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    0093828347
-                  </Text>
-                </HStack>
-
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    ACCOUNT STATUS
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    Default
-                  </Text>
-                </HStack>
-
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    ACCOUNT STATUS DATE
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    12th March 2025
-                  </Text>
-                </HStack>
-
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    LOAN EFFECTIVE DATE
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    10th Dec 2023
-                  </Text>
-                </HStack>
-
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    CREDIT LIMIT
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    500,000
-                  </Text>
-                </HStack>
-
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    AVAILED LIMIT
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    1,390,000
-                  </Text>
-                </HStack>
-
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    OUTSTANDING BALANCE
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    100,000
-                  </Text>
-                </HStack>
-
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    INSTALMENT AMOUNT
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    390,000
-                  </Text>
-                </HStack>
-
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    CURRENCY
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    NGN
-                  </Text>
-                </HStack>
-
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    DAYS IN ARREARS
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    83
-                  </Text>
-                </HStack>
-
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    OVER DUE AMOUNT
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    390,000
-                  </Text>
-                </HStack>
-
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    FACILITY TENOR
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    24 months
-                  </Text>
-                </HStack>
-
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    REPAYMENT FREQUENCY
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    12
-                  </Text>
-                </HStack>
-
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    LAST PAYMENT DATE
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    10th Dec 2024
-                  </Text>
-                </HStack>
-
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    LAST PAYMENT AMOUNT:
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    90,000
-                  </Text>
-                </HStack>
-
-                <HStack
-                  justifyContent="space-between"
-                  w="100%"
-                  borderBottom="1px solid #E5E7EB"
-                  pb="2"
-                >
-                  <Text fontSize="sm" fontWeight="400" color="bodyText.200">
-                    MATURITY DATE
-                  </Text>
-                  <Text fontSize="14px" fontWeight="600" color="bodyText.600">
-                    12th Dec 2026
-                  </Text>
-                </HStack>
-              </SimpleGrid>
-            </Box>
+                    <HStack
+                      justifyContent="space-between"
+                      w="100%"
+                      borderBottom="1px solid #E5E7EB"
+                      pb="2"
+                    >
+                      <Text fontSize="sm" fontWeight="400" color="bodyText.200">
+                        MATURITY DATE
+                      </Text>
+                      <Text
+                        fontSize="14px"
+                        fontWeight="600"
+                        color="bodyText.600"
+                      >
+                        {loan?.maturityDate || 'N/A'}
+                      </Text>
+                    </HStack>
+                  </SimpleGrid>
+                </Box>
+              ))
+            ) : (
+              <Box
+                borderRadius="8px"
+                border="1px solid #E5E7EB"
+                w="100%"
+                p={4}
+                textAlign="center"
+              >
+                <Text fontSize="md" color="bodyText.200">
+                  No loan history available
+                </Text>
+              </Box>
+            )}
           </Box>
         </Box>
       </Box>
