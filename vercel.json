@@ -1,6 +1,6 @@
 {
-  "buildCommand": "npx nx@21.1.2 build @right-credit/under-writing",
+  "buildCommand": "npm install && cd apps/under-writing && npx next build",
   "outputDirectory": "apps/under-writing/.next",
-  "installCommand": "npm ci",
+  "installCommand": "echo 'Installing dependencies in build command'",
   "framework": "nextjs"
 }
