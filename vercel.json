@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "apps/under-writing/package.json",
+      "use": "@vercel/next",
+      "config": {
+        "distDir": "apps/under-writing/.next"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/apps/under-writing/$1"
+    }
+  ],
+  "functions": {
+    "apps/under-writing/src/app/**/*.{ts,tsx}": {
+      "runtime": "nodejs20.x"
+    }
+  },
+  "installCommand": "npm install",
+  "buildCommand": "npx nx build @right-credit/under-writing",
+  "outputDirectory": "apps/under-writing/.next"
+}
