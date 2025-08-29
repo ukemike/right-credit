@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build:under-writing",
+  "buildCommand": "./node_modules/.bin/nx build @right-credit/under-writing",
   "outputDirectory": "apps/under-writing/.next",
   "installCommand": "npm install",
   "framework": "nextjs"

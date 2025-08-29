@@ -2,9 +2,7 @@
   "name": "@right-credit/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {
-    "build:under-writing": "nx build @right-credit/under-writing"
-  },
+  "scripts": {},
   "private": true,
   "dependencies": {
     "@chakra-ui/anatomy": "^2.2.2",
