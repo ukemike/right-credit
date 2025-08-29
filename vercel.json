@@ -1,6 +1,6 @@
 {
-  "buildCommand": "npm install && cd apps/under-writing && npx next build",
+  "buildCommand": "cd apps/under-writing && NODE_PATH=../../node_modules npx next build",
   "outputDirectory": "apps/under-writing/.next",
-  "installCommand": "echo 'Installing dependencies in build command'",
+  "installCommand": "npm install",
   "framework": "nextjs"
 }
