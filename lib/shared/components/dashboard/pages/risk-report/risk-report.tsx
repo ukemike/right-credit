@@ -5,15 +5,16 @@ import {
   HStack,
   Text,
   VStack,
-  Tabs,
-  TabList,
-  TabPanels,
-  TabPanel,
-  Tab,
-  Image,
-  Input,
-  InputGroup,
-  InputLeftElement,
+  // Tabs,
+  // TabList,
+  // TabPanels,
+  // TabPanel,
+  // Tab,
+  // Image,
+  // Input,
+  // InputGroup,
+  // InputLeftElement,
+  Select,
   Skeleton,
   SkeletonText,
   Table,
@@ -113,23 +114,36 @@ const RiskReportComponent = () => {
     refetch();
   };
 
-  const tabs = [
-    {
-      header: `Pending Request (${requests?.length})`,
-      component: <RiskTable data={requests} />,
-      status: 'pending',
-    },
-    {
-      header: 'Completed',
-      component: <RiskTable2 data={requests} />,
-      status: 'completed',
-    },
-    {
-      header: 'Failed',
-      component: <RiskTable3 data={requests} />,
-      status: 'failed',
-    },
-  ];
+  // const tabs = [
+  //   {
+  //     header: `Pending Request (${requests?.length})`,
+  //     component: <RiskTable data={requests} />,
+  //     status: 'pending',
+  //   },
+  //   {
+  //     header: 'Completed',
+  //     component: <RiskTable2 data={requests} />,
+  //     status: 'completed',
+  //   },
+  //   {
+  //     header: 'Failed',
+  //     component: <RiskTable3 data={requests} />,
+  //     status: 'failed',
+  //   },
+  // ];
+
+  const renderTable = () => {
+    switch (status) {
+      case 'pending':
+        return <RiskTable data={requests} />;
+      case 'completed':
+        return <RiskTable2 data={requests} />;
+      case 'failed':
+        return <RiskTable3 data={requests} />;
+      default:
+        return <RiskTable data={requests} />;
+    }
+  };
 
   return (
     <Box bg="white" borderRadius="8px" boxShadow="sm" p={4}>
@@ -160,7 +174,7 @@ const RiskReportComponent = () => {
         </HStack>
       </VStack>
 
-      <Tabs w="100%" variant="unstyled" my="4">
+      {/* <Tabs w="100%" variant="unstyled" my="4">
         <HStack
           justifyContent="space-between"
           w="100%"
@@ -248,7 +262,28 @@ const RiskReportComponent = () => {
             </TabPanel>
           ))}
         </TabPanels>
-      </Tabs>
+      </Tabs> */}
+
+      <HStack justifyContent="space-between" w="100%" my="4">
+        <Text fontSize="lg" fontWeight="600" color="bodyText.100">
+          Risk Reports ({requests?.length || 0})
+        </Text>
+        <Select
+          value={status}
+          onChange={(e) => handleStatusChange(e.target.value as Status)}
+          width="200px"
+          borderRadius="md"
+          borderColor="border.100"
+          focusBorderColor="brand.100"
+          fontSize="sm"
+        >
+          <option value="pending">Pending</option>
+          <option value="completed">Completed</option>
+          <option value="failed">Failed</option>
+        </Select>
+      </HStack>
+
+      {isLoading || isFetching ? <TableSkeletonLoader /> : renderTable()}
     </Box>
   );
 };

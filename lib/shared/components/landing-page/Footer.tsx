@@ -22,7 +22,7 @@ const Footer = () => {
 
     {
       name: 'Terms of Service',
-      link: '#',
+      link: '/terms',
     },
 
     {

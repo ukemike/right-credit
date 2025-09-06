@@ -187,7 +187,7 @@ const DebtBurdenAndIncomeAssessment = ({
                   mt={1}
                 >
                   {/* {bankStatement?.installment_to_income_ratio ? bankStatement.installment_to_income_ratio.toFixed(2) : 'N/A'} */}
-                  {bankStatement?.installment_to_income_ratio || 'N/A'}
+                  {bankStatement?.average_monthly_total_expenses_to_income_ratio || 'N/A'}
                 </Text>
               </VStack>
 

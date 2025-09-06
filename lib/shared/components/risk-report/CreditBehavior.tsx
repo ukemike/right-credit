@@ -134,7 +134,7 @@ const CreditBehavior = ({ riskAnalysis }: CreditBehaviorProps) => {
                   color="headText.100"
                   mt={1}
                 >
-                  3??
+                  {`${creditHistory?.total_number_of_loans || 0}`}
                 </Text>
               </VStack>
 
@@ -154,7 +154,7 @@ const CreditBehavior = ({ riskAnalysis }: CreditBehaviorProps) => {
                   color="headText.100"
                   mt={1}
                 >
-                  1??
+                  {`${creditHistory?.total_number_of_open_loans || 0}`}
                 </Text>
               </VStack>
 

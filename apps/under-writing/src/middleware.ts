@@ -35,7 +35,6 @@ export default function middleware(request: NextRequest) {
 }
 export const config = {
   matcher: [
-    '/',
     '/auth/forgot-password',
     '/auth/login',
     '/auth/reset-password',
