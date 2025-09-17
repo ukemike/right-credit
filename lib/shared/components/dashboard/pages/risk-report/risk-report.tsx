@@ -34,7 +34,7 @@ import RiskTable3 from '../../../risk-report/RiskTable3';
 import Button from '../../../ui/Button';
 import { useListRisksByStateQuery } from '@shared/redux/services/risk.service';
 
-type Status = 'pending' | 'completed' | 'failed';
+type Status = 'all' | 'in_progress' | 'completed' | 'failed';
 
 const TableSkeletonLoader = () => (
   <TableContainer bg="white">
@@ -94,7 +94,7 @@ const TableSkeletonLoader = () => (
 const RiskReportComponent = () => {
   const router = useRouter();
 
-  const [status, setStatus] = useState<Status>('pending');
+  const [status, setStatus] = useState<Status>('all');
 
   const {
     data: risks,
@@ -102,7 +102,7 @@ const RiskReportComponent = () => {
     isFetching,
     refetch,
   } = useListRisksByStateQuery({
-    status,
+    status: status === 'all' ? '' : status,
   });
 
   const requests = useMemo(() => {
@@ -134,7 +134,9 @@ const RiskReportComponent = () => {
 
   const renderTable = () => {
     switch (status) {
-      case 'pending':
+      case 'all':
+        return <RiskTable data={requests} />;
+      case 'in_progress':
         return <RiskTable data={requests} />;
       case 'completed':
         return <RiskTable2 data={requests} />;
@@ -277,7 +279,8 @@ const RiskReportComponent = () => {
           focusBorderColor="brand.100"
           fontSize="sm"
         >
-          <option value="pending">Pending</option>
+          <option value="all">All</option>
+          <option value="in_progress">In Progress</option>
           <option value="completed">Completed</option>
           <option value="failed">Failed</option>
         </Select>

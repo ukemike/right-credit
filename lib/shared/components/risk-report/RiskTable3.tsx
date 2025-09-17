@@ -9,12 +9,12 @@ import {
   HStack,
   Text,
   Box,
-  Badge,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 
 import EmptyState from '../EmptyState';
 import { formatDate } from '@shared/utils/formatter';
+import { StatusBadge } from '@shared/utils';
 import type { LoanData } from '@shared/utils/types';
 
 const RiskTable3 = ({ data }: { data: LoanData[] }) => {
@@ -134,20 +134,7 @@ const RiskTable3 = ({ data }: { data: LoanData[] }) => {
                   </Td>
 
                   <Td py={3} borderBottom="1px solid #FAFAFA">
-                    <Badge
-                      bg="#FF00001C"
-                      color="#FF0000"
-                      borderColor="#FF0000"
-                      borderWidth={1}
-                      fontSize="sm"
-                      textTransform="capitalize"
-                      fontWeight="500"
-                      borderRadius="full"
-                      px={3}
-                      py={1}
-                    >
-                      Failed
-                    </Badge>
+                    <StatusBadge status={risk.state} />
                   </Td>
                 </Tr>
               ))}

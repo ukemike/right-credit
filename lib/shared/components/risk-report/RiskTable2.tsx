@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation';
 import EmptyState from '../EmptyState';
 import Button from '../ui/Button';
 import { formatDate } from '@shared/utils/formatter';
+import { StatusBadge } from '@shared/utils';
 import type { LoanData } from '@shared/utils/types';
 
 const RiskTable = ({ data }: { data: LoanData[] }) => {
@@ -101,6 +102,16 @@ const RiskTable = ({ data }: { data: LoanData[] }) => {
                     color="bodyText.200"
                     textTransform="capitalize"
                   >
+                    Status
+                  </Text>
+                </Th>
+                <Th>
+                  <Text
+                    fontSize="14px"
+                    fontWeight="700"
+                    color="bodyText.200"
+                    textTransform="capitalize"
+                  >
                     Action
                   </Text>
                 </Th>
@@ -145,6 +156,9 @@ const RiskTable = ({ data }: { data: LoanData[] }) => {
                     <Text fontSize="14px" fontWeight="400" color="bodyText.100">
                       {formatDate(risk.created_at)}
                     </Text>
+                  </Td>
+                  <Td py={3} borderBottom="1px solid #FAFAFA">
+                    <StatusBadge status={risk.state} />
                   </Td>
                   <Td py={3} borderBottom="1px solid #FAFAFA">
                     <Button
